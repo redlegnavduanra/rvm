@@ -9,8 +9,8 @@ const y = new Product("Second product", 23.67);
 
 // create Inventory and add the created products with a specified quantity
 const inventory = new Inventory();
-inventory.add(x, 17);
-inventory.add(y, 146);
+inventory.add(x, 439);
+inventory.add(y, 257);
 
 // print inventory to the console
 console.log(inventory.printList());
