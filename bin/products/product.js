@@ -26,10 +26,6 @@ var Product = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    // render a nice output to the console
-    Product.prototype.toString = function () {
-        return "Name: " + this.name + "; Price: " + this.price;
-    };
     return Product;
 }());
 exports.Product = Product;

@@ -25,7 +25,13 @@ export class Inventory {
 *-------------------------------------------------------------------------------------------------------*
 `;
         this.products.forEach((product, idx) => {
-            result += `*\t${idx}\t|\t${product[0].name}\t\t\t|\t€ ${
+            const prodNameTabs = 4 - product[0].name.length / 8;
+            let tabs = "";
+            for (let i = 0; i < prodNameTabs; i++) {
+                tabs += "\t";
+            }
+
+            result += `*\t${idx}\t|\t${product[0].name}${tabs}|\t€ ${
                 product[0].price
             }\t\t|\t${product[1]}\t\t*\n`;
         });

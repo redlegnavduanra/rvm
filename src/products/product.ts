@@ -1,5 +1,5 @@
-export class Product {
-    constructor(private _name: string, private _price: number) {}
+export abstract class Product {
+    constructor(protected _name: string, protected _price: number) {}
 
     /* Getters and Setters */
 
@@ -20,7 +20,5 @@ export class Product {
     }
 
     // render a nice output to the console
-    public toString(): string {
-        return `Name: ${this.name}; Price: ${this.price}`;
-    }
+    public abstract toString(): string;
 }

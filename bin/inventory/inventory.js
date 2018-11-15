@@ -16,7 +16,12 @@ var Inventory = /** @class */ (function () {
     Inventory.prototype.printList = function () {
         var result = "\n*********************************************************************************************************\n*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tQuantity\t*\n*-------------------------------------------------------------------------------------------------------*\n";
         this.products.forEach(function (product, idx) {
-            result += "*\t" + idx + "\t|\t" + product[0].name + "\t\t\t|\t\u20AC " + product[0].price + "\t\t|\t" + product[1] + "\t\t*\n";
+            var prodNameTabs = 4 - product[0].name.length / 8;
+            var tabs = "";
+            for (var i = 0; i < prodNameTabs; i++) {
+                tabs += "\t";
+            }
+            result += "*\t" + idx + "\t|\t" + product[0].name + tabs + "|\t\u20AC " + product[0].price + "\t\t|\t" + product[1] + "\t\t*\n";
         });
         result += "*********************************************************************************************************";
         return result;
