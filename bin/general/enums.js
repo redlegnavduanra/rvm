@@ -45,12 +45,6 @@ var MedicineType;
     MedicineType["Bandage"] = "Bandage";
     MedicineType["Paracetamol"] = "Paracetamol";
 })(MedicineType = exports.MedicineType || (exports.MedicineType = {}));
-var ReceiptStatus;
-(function (ReceiptStatus) {
-    ReceiptStatus[ReceiptStatus["Concept"] = 0] = "Concept";
-    ReceiptStatus[ReceiptStatus["AwaitingPayment"] = 1] = "AwaitingPayment";
-    ReceiptStatus[ReceiptStatus["Closed"] = 2] = "Closed";
-})(ReceiptStatus = exports.ReceiptStatus || (exports.ReceiptStatus = {}));
 var SnackCategory;
 (function (SnackCategory) {
     SnackCategory["Biscuit"] = "Biscuit";

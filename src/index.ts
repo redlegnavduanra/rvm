@@ -15,10 +15,7 @@ import { Cigarrete, Medicine, Snack, Beverage } from "./products";
 import { CashRegister } from "./cashregister";
 import { CLI } from "./ui/cli";
 
-import * as program from "commander";
-
 export class Main {
-    private cli: CLI;
     private inventory: Inventory;
     private cashRegister: CashRegister;
 
@@ -28,7 +25,7 @@ export class Main {
 
         this.createProducts();
 
-        this.cli = new CLI(this.inventory, this.cashRegister);
+        new CLI(this.inventory, this.cashRegister);
     }
 
     createProducts() {

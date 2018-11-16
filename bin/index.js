@@ -11,7 +11,7 @@ var Main = /** @class */ (function () {
         this.inventory = new inventory_1.Inventory(25, 30);
         this.cashRegister = new cashregister_1.CashRegister(this.inventory);
         this.createProducts();
-        this.cli = new cli_1.CLI(this.inventory, this.cashRegister);
+        new cli_1.CLI(this.inventory, this.cashRegister);
     }
     Main.prototype.createProducts = function () {
         this.inventory.add(new products_1.Cigarrete("Marlboro cigarettes", 25.43, general_1.Brand.Marlboro), 150);

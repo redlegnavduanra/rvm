@@ -1,5 +1,4 @@
-import * as program from "commander";
-import * as inquirer from "inquirer";
+import * as redleg from "commander";
 import { CashRegister } from "./../cashregister";
 import { Inventory } from "./../inventory";
 
@@ -11,31 +10,8 @@ export class CLI {
         this.startUp();
     }
 
-    private startUp() {
-        program.version("0.0.1").description("Redleg Vending Machine");
-
-        this.printInventoryList();
-        this.orderProduct();
-
-        program.parse(process.argv);
-    }
-
-    private printInventoryList() {
-        program
-            .command("list")
-            .alias("ls")
-            .description("Print inventory list")
-            .action(() => {
-                this.inventory.printList();
-            });
-    }
-
-    private parseArgsList(val: string) {
-        return val.split(",");
-    }
-
     private orderProduct() {
-        program
+        redleg
             .command("order")
             .alias("o")
             .description("Order product")
@@ -96,5 +72,28 @@ export class CLI {
                     console.log(error.message);
                 }
             });
+    }
+
+    private parseArgsList(val: string) {
+        return val.split(",");
+    }
+
+    private printInventoryList() {
+        redleg
+            .command("list")
+            .alias("ls")
+            .description("Print inventory list")
+            .action(() => {
+                this.inventory.printList();
+            });
+    }
+
+    private startUp() {
+        redleg.version("0.0.1").description("Redleg Vending Machine");
+
+        this.printInventoryList();
+        this.orderProduct();
+
+        redleg.parse(process.argv);
     }
 }

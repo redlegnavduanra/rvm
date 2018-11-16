@@ -1,34 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var program = require("commander");
+var redleg = require("commander");
 var CLI = /** @class */ (function () {
     function CLI(inventory, cashRegister) {
         this.inventory = inventory;
         this.cashRegister = cashRegister;
         this.startUp();
     }
-    CLI.prototype.startUp = function () {
-        program.version("0.0.1").description("Redleg Vending Machine");
-        this.printInventoryList();
-        this.orderProduct();
-        program.parse(process.argv);
-    };
-    CLI.prototype.printInventoryList = function () {
-        var _this = this;
-        program
-            .command("list")
-            .alias("ls")
-            .description("Print inventory list")
-            .action(function () {
-            _this.inventory.printList();
-        });
-    };
-    CLI.prototype.parseArgsList = function (val) {
-        return val.split(",");
-    };
     CLI.prototype.orderProduct = function () {
         var _this = this;
-        program
+        redleg
             .command("order")
             .alias("o")
             .description("Order product")
@@ -68,6 +49,25 @@ var CLI = /** @class */ (function () {
                 console.log(error.message);
             }
         });
+    };
+    CLI.prototype.parseArgsList = function (val) {
+        return val.split(",");
+    };
+    CLI.prototype.printInventoryList = function () {
+        var _this = this;
+        redleg
+            .command("list")
+            .alias("ls")
+            .description("Print inventory list")
+            .action(function () {
+            _this.inventory.printList();
+        });
+    };
+    CLI.prototype.startUp = function () {
+        redleg.version("0.0.1").description("Redleg Vending Machine");
+        this.printInventoryList();
+        this.orderProduct();
+        redleg.parse(process.argv);
     };
     return CLI;
 }());

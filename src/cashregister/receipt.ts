@@ -1,29 +1,18 @@
 import { ProductLine, Product } from "./../products";
-import { ReceiptStatus } from "../general";
 
 export class Receipt {
     private _receiptLines: Array<ProductLine>;
-    private _status: ReceiptStatus;
     private _totalPaidAmount: number;
     private _totalPayableAmount: number;
 
     constructor() {
         this._receiptLines = [];
-        this._status = ReceiptStatus.Concept;
         this._totalPaidAmount = 0;
         this._totalPayableAmount = 0;
     }
 
     get products(): Array<ProductLine> {
         return this._receiptLines;
-    }
-
-    get status(): ReceiptStatus {
-        return this._status;
-    }
-
-    set status(status: ReceiptStatus) {
-        this._status = status;
     }
 
     get totalPaidAmount(): number {
@@ -78,9 +67,13 @@ export class Receipt {
     }
 
     toString(): string {
+        const title =
+            this.totalPaidAmount >= this.totalPayableAmount
+                ? ` YOUR PURCHASE`
+                : `    YOUR ORDER`;
         let result = `
 *****************************************************************
-*\t\t\t    YOUR ORDER\t\t\t\t*
+*\t\t\t${title}\t\t\t\t*
 *****************************************************************
 `;
 

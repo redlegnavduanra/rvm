@@ -1,26 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var general_1 = require("../general");
 var Receipt = /** @class */ (function () {
     function Receipt() {
         this._receiptLines = [];
-        this._status = general_1.ReceiptStatus.Concept;
         this._totalPaidAmount = 0;
         this._totalPayableAmount = 0;
     }
     Object.defineProperty(Receipt.prototype, "products", {
         get: function () {
             return this._receiptLines;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Receipt.prototype, "status", {
-        get: function () {
-            return this._status;
-        },
-        set: function (status) {
-            this._status = status;
         },
         enumerable: true,
         configurable: true
@@ -73,7 +61,10 @@ var Receipt = /** @class */ (function () {
         console.log("" + this);
     };
     Receipt.prototype.toString = function () {
-        var result = "\n*****************************************************************\n*\t\t\t    YOUR ORDER\t\t\t\t*\n*****************************************************************\n";
+        var title = this.totalPaidAmount >= this.totalPayableAmount
+            ? " YOUR PURCHASE"
+            : "    YOUR ORDER";
+        var result = "\n*****************************************************************\n*\t\t\t" + title + "\t\t\t\t*\n*****************************************************************\n";
         this._receiptLines.forEach(function (prd) {
             var prodName = prd[0].name.length < 10 ? prd[0].name + "\t" : "" + prd[0].name;
             result += "*   " + prodName + "\t" + prd[1] + "\t\u20AC " + prd[0].price.toFixed(2) + "\t\t\u20AC " + (prd[1] * prd[0].price).toFixed(2) + "\t\t*\n";
