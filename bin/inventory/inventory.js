@@ -76,16 +76,6 @@ var Inventory = /** @class */ (function () {
             prdIdx < 0
                 ? this._products.push([product, quantity])
                 : (this._products[prdIdx][1] += quantity);
-            console.log("Inventory: Added " + quantity + " items of " + product.name);
-        }
-        else {
-            console.error("Inventory: Cannot add " +
-                quantity +
-                " items of " +
-                product.name +
-                ", because you there are only " +
-                totalFreeSlots +
-                " slots available");
         }
     };
     Inventory.prototype.getProduct = function (id) {
@@ -105,24 +95,21 @@ var Inventory = /** @class */ (function () {
         this._products.forEach(function (product) { return (result += "\n" + product[0]); });
         return result;
     };
+    Inventory.prototype.printList = function () {
+        console.log("" + this);
+    };
     Inventory.prototype.remove = function (product, quantity) {
         if (quantity === void 0) { quantity = 1; }
         var prdIdx = this._products.findIndex(function (prd) { return prd[0].name === product.name; });
-        if (prdIdx < 0) {
-            console.error("Inventory: Cannot find product " + product.name);
-        }
-        else {
-            if (quantity > this._products[prdIdx][1]) {
-                console.error("Inventory: Cannot remove " + quantity + " " + product.name + "; only " + this._products[prdIdx][1] + " available");
-            }
-            else {
-                this._products[prdIdx][1] -= quantity;
-                console.log("Inventory: " + quantity + " " + product.name + " removed; " + this._products[prdIdx][1] + " remaining");
-            }
+        if (prdIdx >= 0 && quantity <= this._products[prdIdx][1]) {
+            this._products[prdIdx][1] -= quantity;
         }
     };
-    Inventory.prototype.selectProduct = function (name) {
-        this._selectedProduct = this._products.findIndex(function (prd) { return prd[0].name === name; });
+    Inventory.prototype.selectProduct = function (id) {
+        if (id < 0 || id >= this._products.length) {
+            throw new Error("Index out of bounds");
+        }
+        this._selectedProduct = id;
     };
     // render a nice output to the console
     Inventory.prototype.toString = function () {
@@ -137,7 +124,7 @@ var Inventory = /** @class */ (function () {
             var availableSlots = product[1] % _this.maxItemsPerRow > 0
                 ? _this.maxItemsPerRow - (product[1] % _this.maxItemsPerRow)
                 : "";
-            result += "*\t" + idx + "\t|\t" + product[0].name + tabs + "|\t\u20AC " + product[0].price + "\t\t|\t" + product[1] + "\t\t|\t" + Math.ceil(product[1] / _this.maxItemsPerRow) + "\t\t|\t" + availableSlots + "\t\t*\n";
+            result += "*\t" + idx + "\t|\t" + product[0].name + tabs + "|\t\u20AC " + product[0].price.toFixed(2) + "\t\t|\t" + product[1] + "\t\t|\t" + Math.ceil(product[1] / _this.maxItemsPerRow) + "\t\t|\t" + availableSlots + "\t\t*\n";
         });
         result += "*********************************************************************************************************************************************************\n*\tTotal Stock size: " + this.size + " (" + this.maxRows + " rows of " + this.maxItemsPerRow + " slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: " + (this.maxRows -
             this

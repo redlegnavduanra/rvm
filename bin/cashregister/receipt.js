@@ -8,6 +8,13 @@ var Receipt = /** @class */ (function () {
         this._totalPaidAmount = 0;
         this._totalPayableAmount = 0;
     }
+    Object.defineProperty(Receipt.prototype, "products", {
+        get: function () {
+            return this._receiptLines;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Receipt.prototype, "status", {
         get: function () {
             return this._status;
@@ -48,7 +55,6 @@ var Receipt = /** @class */ (function () {
             this._receiptLines.push([product, quantity]);
         }
         this.totalPayableAmount += quantity * product.price;
-        console.log("Receipt: added product: " + this._receiptLines.length);
     };
     Receipt.prototype.removeProduct = function (product, quantity) {
         if (quantity === void 0) { quantity = 1; }
@@ -59,13 +65,25 @@ var Receipt = /** @class */ (function () {
                 : (this._receiptLines[prdIdx][1] -= quantity);
             this.totalPayableAmount -= quantity * product.price;
         }
-        console.log("Receipt: removed product: " + this._receiptLines.length);
     };
     Receipt.prototype.payAmount = function (amount) {
         this._totalPaidAmount += amount;
     };
+    Receipt.prototype.printReceipt = function () {
+        console.log("" + this);
+    };
     Receipt.prototype.toString = function () {
-        var result = "";
+        var result = "\n*****************************************************************\n*\t\t\t    YOUR ORDER\t\t\t\t*\n*****************************************************************\n";
+        this._receiptLines.forEach(function (prd) {
+            var prodName = prd[0].name.length < 10 ? prd[0].name + "\t" : "" + prd[0].name;
+            result += "*   " + prodName + "\t" + prd[1] + "\t\u20AC " + prd[0].price.toFixed(2) + "\t\t\u20AC " + (prd[1] * prd[0].price).toFixed(2) + "\t\t*\n";
+        });
+        result += "*\t\t\t\t\t\t\t\t*\n*\t\t\t\t\t\t\t\t*\n*   Total:\t\t\t\t\t\u20AC " + this.totalPayableAmount + "\t\t*\n*---------------------------------------------------------------*\n*   Paid:\t\t\t\t\t\u20AC " + this.totalPaidAmount.toFixed(2) + "\t\t*";
+        result +=
+            this.totalPaidAmount - this.totalPayableAmount >= 0
+                ? "\n*   Change:\t\t\t\t\t\u20AC " + (this.totalPaidAmount - this.totalPayableAmount).toFixed(2) + "\t\t*"
+                : "";
+        result += "\n*****************************************************************";
         return result;
     };
     return Receipt;

@@ -67,19 +67,6 @@ export class Inventory {
             prdIdx < 0
                 ? this._products.push([product, quantity])
                 : (this._products[prdIdx][1] += quantity);
-            console.log(
-                "Inventory: Added " + quantity + " items of " + product.name
-            );
-        } else {
-            console.error(
-                "Inventory: Cannot add " +
-                    quantity +
-                    " items of " +
-                    product.name +
-                    ", because you there are only " +
-                    totalFreeSlots +
-                    " slots available"
-            );
         }
     }
 
@@ -105,35 +92,26 @@ export class Inventory {
         return result;
     }
 
+    printList() {
+        console.log("" + this);
+    }
+
     remove(product: Product, quantity: number = 1) {
         const prdIdx = this._products.findIndex(
             prd => prd[0].name === product.name
         );
 
-        if (prdIdx < 0) {
-            console.error(`Inventory: Cannot find product ${product.name}`);
-        } else {
-            if (quantity > this._products[prdIdx][1]) {
-                console.error(
-                    `Inventory: Cannot remove ${quantity} ${
-                        product.name
-                    }; only ${this._products[prdIdx][1]} available`
-                );
-            } else {
-                this._products[prdIdx][1] -= quantity;
-                console.log(
-                    `Inventory: ${quantity} ${product.name} removed; ${
-                        this._products[prdIdx][1]
-                    } remaining`
-                );
-            }
+        if (prdIdx >= 0 && quantity <= this._products[prdIdx][1]) {
+            this._products[prdIdx][1] -= quantity;
         }
     }
 
-    selectProduct(name: string) {
-        this._selectedProduct = this._products.findIndex(
-            prd => prd[0].name === name
-        );
+    selectProduct(id: number) {
+        if (id < 0 || id >= this._products.length) {
+            throw new Error("Index out of bounds");
+        }
+
+        this._selectedProduct = id;
     }
 
     // render a nice output to the console
@@ -155,9 +133,11 @@ export class Inventory {
                     ? this.maxItemsPerRow - (product[1] % this.maxItemsPerRow)
                     : "";
 
-            result += `*\t${idx}\t|\t${product[0].name}${tabs}|\t€ ${
-                product[0].price
-            }\t\t|\t${product[1]}\t\t|\t${Math.ceil(
+            result += `*\t${idx}\t|\t${
+                product[0].name
+            }${tabs}|\t€ ${product[0].price.toFixed(2)}\t\t|\t${
+                product[1]
+            }\t\t|\t${Math.ceil(
                 product[1] / this.maxItemsPerRow
             )}\t\t|\t${availableSlots}\t\t*\n`;
         });

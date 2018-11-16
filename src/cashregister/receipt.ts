@@ -14,6 +14,10 @@ export class Receipt {
         this._totalPayableAmount = 0;
     }
 
+    get products(): Array<ProductLine> {
+        return this._receiptLines;
+    }
+
     get status(): ReceiptStatus {
         return this._status;
     }
@@ -50,7 +54,6 @@ export class Receipt {
         }
 
         this.totalPayableAmount += quantity * product.price;
-        console.log(`Receipt: added product: ${this._receiptLines.length}`);
     }
 
     removeProduct(product: Product, quantity: number = 1) {
@@ -64,17 +67,45 @@ export class Receipt {
                 : (this._receiptLines[prdIdx][1] -= quantity);
             this.totalPayableAmount -= quantity * product.price;
         }
-
-        console.log(`Receipt: removed product: ${this._receiptLines.length}`);
     }
 
     payAmount(amount: number) {
         this._totalPaidAmount += amount;
     }
 
-    toString(): string {
-        let result = ``;
+    printReceipt() {
+        console.log("" + this);
+    }
 
+    toString(): string {
+        let result = `
+*****************************************************************
+*\t\t\t    YOUR ORDER\t\t\t\t*
+*****************************************************************
+`;
+
+        this._receiptLines.forEach(prd => {
+            const prodName =
+                prd[0].name.length < 10 ? `${prd[0].name}\t` : `${prd[0].name}`;
+            result += `*   ${prodName}\t${prd[1]}\t€ ${prd[0].price.toFixed(
+                2
+            )}\t\t€ ${(prd[1] * prd[0].price).toFixed(2)}\t\t*\n`;
+        });
+
+        result += `*\t\t\t\t\t\t\t\t*
+*\t\t\t\t\t\t\t\t*
+*   Total:\t\t\t\t\t€ ${this.totalPayableAmount}\t\t*
+*---------------------------------------------------------------*
+*   Paid:\t\t\t\t\t€ ${this.totalPaidAmount.toFixed(2)}\t\t*`;
+
+        result +=
+            this.totalPaidAmount - this.totalPayableAmount >= 0
+                ? `\n*   Change:\t\t\t\t\t€ ${(
+                      this.totalPaidAmount - this.totalPayableAmount
+                  ).toFixed(2)}\t\t*`
+                : ``;
+        result += `
+*****************************************************************`;
         return result;
     }
 }

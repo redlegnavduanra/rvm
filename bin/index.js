@@ -5,10 +5,13 @@ var inventory_1 = require("./inventory/inventory");
 var general_1 = require("./general");
 var products_1 = require("./products");
 var cashregister_1 = require("./cashregister");
+var cli_1 = require("./ui/cli");
 var Main = /** @class */ (function () {
     function Main() {
         this.inventory = new inventory_1.Inventory(25, 30);
-        this.cashRegister = new cashregister_1.CashRegister();
+        this.cashRegister = new cashregister_1.CashRegister(this.inventory);
+        this.createProducts();
+        this.cli = new cli_1.CLI(this.inventory, this.cashRegister);
     }
     Main.prototype.createProducts = function () {
         this.inventory.add(new products_1.Cigarrete("Marlboro cigarettes", 25.43, general_1.Brand.Marlboro), 150);
@@ -19,32 +22,7 @@ var Main = /** @class */ (function () {
         this.inventory.add(new products_1.Beverage("Coca Cola", 1.0, general_1.Brand.CocaCola, new general_1.Quantity(33, general_1.UnitOfMeasurement.CentiLiter), true), 16);
         this.inventory.add(new products_1.Snack("PretMix", 2.34, general_1.SnackCategory.Candy, general_1.Brand.RedBand, general_1.SnackType.Fruitgom, new general_1.Quantity(56, general_1.UnitOfMeasurement.Calorie)), 3);
     };
-    Main.prototype.selectProduct = function () {
-        this.inventory.selectProduct("Hansaplast BandAid");
-        this.cashRegister.createReceipt();
-        this.cashRegister.addProduct(this.inventory.selectedProduct[0]);
-        this.cashRegister.payAmount(0.75);
-        this.cashRegister.payAmount(0.75);
-    };
-    Main.prototype.printList = function () {
-        console.log(this.inventory.toString());
-    };
-    Main.prototype.printItems = function () {
-        console.log(this.inventory.printItems());
-    };
-    Main.prototype.printItem = function (id) {
-        try {
-            console.log(this.inventory.printItem(id));
-        }
-        catch (error) {
-            console.error(error.message);
-        }
-    };
     return Main;
 }());
 exports.Main = Main;
-var main = new Main();
-main.createProducts();
-main.printList();
-main.printItems();
-main.selectProduct();
+new Main();

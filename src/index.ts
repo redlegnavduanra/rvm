@@ -13,14 +13,22 @@ import {
 } from "./general";
 import { Cigarrete, Medicine, Snack, Beverage } from "./products";
 import { CashRegister } from "./cashregister";
+import { CLI } from "./ui/cli";
+
+import * as program from "commander";
 
 export class Main {
+    private cli: CLI;
     private inventory: Inventory;
     private cashRegister: CashRegister;
 
     constructor() {
         this.inventory = new Inventory(25, 30);
-        this.cashRegister = new CashRegister();
+        this.cashRegister = new CashRegister(this.inventory);
+
+        this.createProducts();
+
+        this.cli = new CLI(this.inventory, this.cashRegister);
     }
 
     createProducts() {
@@ -98,34 +106,6 @@ export class Main {
             3
         );
     }
-
-    selectProduct() {
-        this.inventory.selectProduct("Hansaplast BandAid");
-        this.cashRegister.createReceipt();
-        this.cashRegister.addProduct(this.inventory.selectedProduct[0]);
-        this.cashRegister.payAmount(0.75);
-        this.cashRegister.payAmount(0.75);
-    }
-
-    printList() {
-        console.log(this.inventory.toString());
-    }
-
-    printItems() {
-        console.log(this.inventory.printItems());
-    }
-
-    printItem(id: number) {
-        try {
-            console.log(this.inventory.printItem(id));
-        } catch (error) {
-            console.error(error.message);
-        }
-    }
 }
 
-const main = new Main();
-main.createProducts();
-main.printList();
-main.printItems();
-main.selectProduct();
+new Main();
