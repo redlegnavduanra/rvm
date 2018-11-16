@@ -5,7 +5,26 @@ var Inventory = /** @class */ (function () {
         this._maxRows = _maxRows;
         this._maxItemsPerRow = _maxItemsPerRow;
         this._products = [];
+        this._selectedProduct = -1;
     }
+    Object.defineProperty(Inventory.prototype, "fullEmptyRows", {
+        get: function () {
+            var _this = this;
+            var totalOccupiedRows = this._products
+                .map(function (prd) { return Math.ceil(prd[1] / _this.maxItemsPerRow); })
+                .reduce(function (acc, cur) { return acc + cur; }, 0);
+            return this.maxRows - totalOccupiedRows;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Inventory.prototype, "fullEmptyRowsSlots", {
+        get: function () {
+            return this.fullEmptyRows * this.maxItemsPerRow;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Inventory.prototype, "maxRows", {
         get: function () {
             return this._maxRows;
@@ -26,27 +45,19 @@ var Inventory = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Inventory.prototype, "selectedProduct", {
+        get: function () {
+            if (this._selectedProduct < 0) {
+                throw Error("No product selected");
+            }
+            return this._products[this._selectedProduct];
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Inventory.prototype, "size", {
         get: function () {
             return this._maxRows * this._maxItemsPerRow;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Inventory.prototype, "fullEmptyRows", {
-        get: function () {
-            var _this = this;
-            var totalOccupiedRows = this._products
-                .map(function (prd) { return Math.ceil(prd[1] / _this.maxItemsPerRow); })
-                .reduce(function (acc, cur) { return acc + cur; }, 0);
-            return this.maxRows - totalOccupiedRows;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Inventory.prototype, "fullEmptyRowsSlots", {
-        get: function () {
-            return this.fullEmptyRows * this.maxItemsPerRow;
         },
         enumerable: true,
         configurable: true
@@ -65,32 +76,16 @@ var Inventory = /** @class */ (function () {
             prdIdx < 0
                 ? this._products.push([product, quantity])
                 : (this._products[prdIdx][1] += quantity);
-            console.log("Added " + quantity + " items of " + product.name);
+            console.log("Inventory: Added " + quantity + " items of " + product.name);
         }
         else {
-            console.error("Cannot add " +
+            console.error("Inventory: Cannot add " +
                 quantity +
                 " items of " +
                 product.name +
                 ", because you there are only " +
                 totalFreeSlots +
                 " slots available");
-        }
-    };
-    Inventory.prototype.remove = function (product, quantity) {
-        if (quantity === void 0) { quantity = 1; }
-        var prdIdx = this._products.findIndex(function (prd) { return prd[0].name === product.name; });
-        if (prdIdx < 0) {
-            console.error("Cannot find product " + product.name);
-        }
-        else {
-            if (quantity > this._products[prdIdx][1]) {
-                console.error("Cannot remove " + quantity + " " + product.name + "; only " + this._products[prdIdx][1] + " available");
-            }
-            else {
-                this._products[prdIdx][1] -= quantity;
-                console.log(quantity + " " + product.name + " removed; " + this._products[prdIdx][1] + " remaining");
-            }
         }
     };
     Inventory.prototype.getProduct = function (id) {
@@ -109,6 +104,25 @@ var Inventory = /** @class */ (function () {
         var result = "";
         this._products.forEach(function (product) { return (result += "\n" + product[0]); });
         return result;
+    };
+    Inventory.prototype.remove = function (product, quantity) {
+        if (quantity === void 0) { quantity = 1; }
+        var prdIdx = this._products.findIndex(function (prd) { return prd[0].name === product.name; });
+        if (prdIdx < 0) {
+            console.error("Inventory: Cannot find product " + product.name);
+        }
+        else {
+            if (quantity > this._products[prdIdx][1]) {
+                console.error("Inventory: Cannot remove " + quantity + " " + product.name + "; only " + this._products[prdIdx][1] + " available");
+            }
+            else {
+                this._products[prdIdx][1] -= quantity;
+                console.log("Inventory: " + quantity + " " + product.name + " removed; " + this._products[prdIdx][1] + " remaining");
+            }
+        }
+    };
+    Inventory.prototype.selectProduct = function (name) {
+        this._selectedProduct = this._products.findIndex(function (prd) { return prd[0].name === name; });
     };
     // render a nice output to the console
     Inventory.prototype.toString = function () {

@@ -12,12 +12,15 @@ import {
     UnitOfMeasurement
 } from "./general";
 import { Cigarrete, Medicine, Snack, Beverage } from "./products";
+import { CashRegister } from "./cashregister";
 
 export class Main {
     private inventory: Inventory;
+    private cashRegister: CashRegister;
 
     constructor() {
         this.inventory = new Inventory(25, 30);
+        this.cashRegister = new CashRegister();
     }
 
     createProducts() {
@@ -96,6 +99,14 @@ export class Main {
         );
     }
 
+    selectProduct() {
+        this.inventory.selectProduct("Hansaplast BandAid");
+        this.cashRegister.createReceipt();
+        this.cashRegister.addProduct(this.inventory.selectedProduct[0]);
+        this.cashRegister.payAmount(0.75);
+        this.cashRegister.payAmount(0.75);
+    }
+
     printList() {
         console.log(this.inventory.toString());
     }
@@ -117,3 +128,4 @@ const main = new Main();
 main.createProducts();
 main.printList();
 main.printItems();
+main.selectProduct();

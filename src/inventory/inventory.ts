@@ -1,13 +1,24 @@
-import { Product } from "../products/product";
-
-type InventoryTuple = [Product, number];
+import { Product, ProductLine } from "../products/product";
 
 export class Inventory {
-    // in memory db, should be persisted in nosql/sql db in production code
-    private _products: Array<InventoryTuple>;
+    private _products: Array<ProductLine>;
+    private _selectedProduct: number;
 
     constructor(private _maxRows: number, private _maxItemsPerRow: number) {
         this._products = [];
+        this._selectedProduct = -1;
+    }
+
+    get fullEmptyRows(): number {
+        const totalOccupiedRows = this._products
+            .map(prd => Math.ceil(prd[1] / this.maxItemsPerRow))
+            .reduce((acc, cur) => acc + cur, 0);
+
+        return this.maxRows - totalOccupiedRows;
+    }
+
+    get fullEmptyRowsSlots(): number {
+        return this.fullEmptyRows * this.maxItemsPerRow;
     }
 
     get maxRows(): number {
@@ -26,25 +37,21 @@ export class Inventory {
         this._maxItemsPerRow = maxItems;
     }
 
+    get selectedProduct(): ProductLine {
+        if (this._selectedProduct < 0) {
+            throw Error("No product selected");
+        }
+
+        return this._products[this._selectedProduct];
+    }
+
     get size(): number {
         return this._maxRows * this._maxItemsPerRow;
     }
 
-    get fullEmptyRows(): number {
-        const totalOccupiedRows = this._products
-            .map(prd => Math.ceil(prd[1] / this.maxItemsPerRow))
-            .reduce((acc, cur) => acc + cur, 0);
-
-        return this.maxRows - totalOccupiedRows;
-    }
-
-    get fullEmptyRowsSlots(): number {
-        return this.fullEmptyRows * this.maxItemsPerRow;
-    }
-
     // adding a product is only allowed into complete free rows and into rows where the products already added before.
     // Two different products in the same row are not allowed
-    public add(product: Product, quantity: number = 1) {
+    add(product: Product, quantity: number = 1) {
         const prdIdx = this._products.findIndex(
             prd => prd[0].name === product.name
         );
@@ -60,10 +67,12 @@ export class Inventory {
             prdIdx < 0
                 ? this._products.push([product, quantity])
                 : (this._products[prdIdx][1] += quantity);
-            console.log("Added " + quantity + " items of " + product.name);
+            console.log(
+                "Inventory: Added " + quantity + " items of " + product.name
+            );
         } else {
             console.error(
-                "Cannot add " +
+                "Inventory: Cannot add " +
                     quantity +
                     " items of " +
                     product.name +
@@ -74,32 +83,7 @@ export class Inventory {
         }
     }
 
-    public remove(product: Product, quantity: number = 1) {
-        const prdIdx = this._products.findIndex(
-            prd => prd[0].name === product.name
-        );
-
-        if (prdIdx < 0) {
-            console.error(`Cannot find product ${product.name}`);
-        } else {
-            if (quantity > this._products[prdIdx][1]) {
-                console.error(
-                    `Cannot remove ${quantity} ${product.name}; only ${
-                        this._products[prdIdx][1]
-                    } available`
-                );
-            } else {
-                this._products[prdIdx][1] -= quantity;
-                console.log(
-                    `${quantity} ${product.name} removed; ${
-                        this._products[prdIdx][1]
-                    } remaining`
-                );
-            }
-        }
-    }
-
-    public getProduct(id: number): InventoryTuple {
+    getProduct(id: number): ProductLine {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Cannot get product: invalid id provided");
         }
@@ -107,7 +91,7 @@ export class Inventory {
         return this._products[id];
     }
 
-    public printItem(id: number): string {
+    printItem(id: number): string {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Cannot print item: invalid id provided");
         }
@@ -115,14 +99,45 @@ export class Inventory {
         return "" + this._products[id];
     }
 
-    public printItems(): string {
+    printItems(): string {
         let result = "";
         this._products.forEach(product => (result += "\n" + product[0]));
         return result;
     }
 
+    remove(product: Product, quantity: number = 1) {
+        const prdIdx = this._products.findIndex(
+            prd => prd[0].name === product.name
+        );
+
+        if (prdIdx < 0) {
+            console.error(`Inventory: Cannot find product ${product.name}`);
+        } else {
+            if (quantity > this._products[prdIdx][1]) {
+                console.error(
+                    `Inventory: Cannot remove ${quantity} ${
+                        product.name
+                    }; only ${this._products[prdIdx][1]} available`
+                );
+            } else {
+                this._products[prdIdx][1] -= quantity;
+                console.log(
+                    `Inventory: ${quantity} ${product.name} removed; ${
+                        this._products[prdIdx][1]
+                    } remaining`
+                );
+            }
+        }
+    }
+
+    selectProduct(name: string) {
+        this._selectedProduct = this._products.findIndex(
+            prd => prd[0].name === name
+        );
+    }
+
     // render a nice output to the console
-    public toString(): string {
+    toString(): string {
         let result = `
 *********************************************************************************************************************************************************
 *\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tQuantity\t|\tUsed Rows\t|\tFree lots\t*

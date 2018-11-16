@@ -1,5 +1,7 @@
 import { Brand } from "./../general";
 
+export type ProductLine = [Product, number];
+
 export abstract class Product {
     constructor(
         protected _name: string,
@@ -34,5 +36,5 @@ export abstract class Product {
     }
 
     // render a nice output to the console
-    public abstract toString(): string;
+    abstract toString(): string;
 }

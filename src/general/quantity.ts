@@ -6,7 +6,7 @@ export class Quantity {
         private unitOfMeasurement: UnitOfMeasurement
     ) {}
 
-    public toString(): string {
+    toString(): string {
         return `${this.amount} ${this.unitOfMeasurement}`;
     }
 }

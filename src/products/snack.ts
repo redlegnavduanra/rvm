@@ -37,7 +37,7 @@ export class Snack extends Product {
         this._type = type;
     }
 
-    public toString() {
+    toString() {
         return `Name: ${this.name}; Price: ${this.price}; Category: ${
             this.category
         }; Type: ${this.type}; Brand: ${this.brand}; Energy: ${this.energy}`;

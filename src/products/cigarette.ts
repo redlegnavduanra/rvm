@@ -42,7 +42,7 @@ export class Cigarrete extends Product {
     }
 
     // render a nice output to the console
-    public toString(): string {
+    toString(): string {
         return `Name: ${this.name}; Price: ${this.price}; Brand: ${
             this.brand
         }; Volume: ${this._volume}; Type: ${this.type}`;
