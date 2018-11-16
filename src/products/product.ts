@@ -1,7 +1,21 @@
+import { Brand } from "./../general";
+
 export abstract class Product {
-    constructor(protected _name: string, protected _price: number) {}
+    constructor(
+        protected _name: string,
+        protected _price: number,
+        protected _brand: Brand
+    ) {}
 
     /* Getters and Setters */
+
+    get brand(): Brand {
+        return this._brand;
+    }
+
+    set brand(brand: Brand) {
+        this._brand = brand;
+    }
 
     get name(): string {
         return this._name;

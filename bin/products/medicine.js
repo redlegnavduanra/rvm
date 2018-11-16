@@ -14,26 +14,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var product_1 = require("./product");
-var MedicineType;
-(function (MedicineType) {
-    MedicineType["BandAid"] = "Band aid";
-    MedicineType["Bandage"] = "Bandage";
-    MedicineType["Paracetamol"] = "Paracetamol";
-})(MedicineType = exports.MedicineType || (exports.MedicineType = {}));
-var Illness;
-(function (Illness) {
-    Illness["Fever"] = "Fever";
-    Illness["Migraine"] = "Migraine";
-    Illness["Earache"] = "Earache";
-    Illness["BrokenArm"] = "Broken arm";
-    Illness["Wound"] = "Wound";
-})(Illness = exports.Illness || (exports.Illness = {}));
 var Medicine = /** @class */ (function (_super) {
     __extends(Medicine, _super);
-    function Medicine(_name, _price, _type, _illness) {
-        var _this = _super.call(this, _name, _price) || this;
+    function Medicine(_name, _price, _brand, _type, _illness) {
+        var _this = _super.call(this, _name, _price, _brand) || this;
         _this._name = _name;
         _this._price = _price;
+        _this._brand = _brand;
         _this._type = _type;
         _this._illness = _illness;
         return _this;
@@ -71,7 +58,7 @@ var Medicine = /** @class */ (function (_super) {
         }
     };
     Medicine.prototype.toString = function () {
-        return "Name: " + this.name + "; Price: " + this.price + "; Type: " + this.type + "; Apply by: " + this.illness + " ";
+        return "Name: " + this.name + "; Price: " + this.price + "; Type: " + this.type + "; Applicable for: " + this.illness + " ";
     };
     return Medicine;
 }(product_1.Product));

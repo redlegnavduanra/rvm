@@ -1,11 +1,6 @@
-export enum UnitOfMeasurement {
-    Joule = "J",
-    KiloJoule = "KJ",
-    Calorie = "Cal",
-    KiloCalorie = "KCal"
-}
+import { UnitOfMeasurement } from "./enums";
 
-export class Energy {
+export class Quantity {
     constructor(
         private amount: number,
         private unitOfMeasurement: UnitOfMeasurement

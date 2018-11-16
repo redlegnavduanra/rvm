@@ -1,34 +1,27 @@
 import { Product } from "./product";
-
-export enum CigarreteBrand {
-    Camel = "Camel",
-    Davidoff = "Davidoff",
-    Kent = "Kent",
-    Marlboro = "Marlboro"
-}
-
-export enum CigarreteType {
-    Light = "Light",
-    Menthol = "Menthol",
-    Normal = "Normal"
-}
+import {
+    Brand,
+    CigarreteType,
+    Quantity,
+    UnitOfMeasurement
+} from "./../general";
 
 export class Cigarrete extends Product {
     constructor(
         protected _name: string,
         protected _price: number,
-        private _brand: CigarreteBrand,
+        protected _brand: Brand,
         private _type: CigarreteType = CigarreteType.Normal,
-        private _volume: number = 12
+        private _volume: Quantity = new Quantity(12, UnitOfMeasurement.Unit)
     ) {
-        super(_name, _price);
+        super(_name, _price, _brand);
     }
 
-    get brand(): CigarreteBrand {
+    get brand(): Brand {
         return this._brand;
     }
 
-    set brand(brand: CigarreteBrand) {
+    set brand(brand: Brand) {
         this._brand = brand;
     }
 
@@ -40,11 +33,11 @@ export class Cigarrete extends Product {
         this._type = type;
     }
 
-    get volume(): number {
+    get volume(): Quantity {
         return this._volume;
     }
 
-    set volume(volume: number) {
+    set volume(volume: Quantity) {
         this._volume = volume;
     }
 

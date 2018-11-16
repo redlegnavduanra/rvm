@@ -1,27 +1,15 @@
 import { Product } from "./product";
-
-export enum MedicineType {
-    BandAid = "Band aid",
-    Bandage = "Bandage",
-    Paracetamol = "Paracetamol"
-}
-
-export enum Illness {
-    Fever = "Fever",
-    Migraine = "Migraine",
-    Earache = "Earache",
-    BrokenArm = "Broken arm",
-    Wound = "Wound"
-}
+import { Brand, Illness, MedicineType } from "./../general";
 
 export class Medicine extends Product {
     constructor(
         protected _name: string,
         protected _price: number,
+        protected _brand: Brand,
         private _type: MedicineType,
         private _illness: Illness[]
     ) {
-        super(_name, _price);
+        super(_name, _price, _brand);
     }
 
     get illness(): Illness[] {
@@ -58,6 +46,6 @@ export class Medicine extends Product {
     toString(): string {
         return `Name: ${this.name}; Price: ${this.price}; Type: ${
             this.type
-        }; Apply by: ${this.illness} `;
+        }; Applicable for: ${this.illness} `;
     }
 }

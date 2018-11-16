@@ -4,23 +4,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var inventory_1 = require("./inventory/inventory");
 var general_1 = require("./general");
 var products_1 = require("./products");
-var medicine_1 = require("./products/medicine");
-// create a few products
-var marlboroCigarette = new products_1.Cigarrete("Marlboro cigarettes", 25.43, products_1.CigarreteBrand.Marlboro);
-var davidoffCigarette = new products_1.Cigarrete("Davidoff cigarettes", 23.67, products_1.CigarreteBrand.Davidoff, products_1.CigarreteType.Light, 36);
-var winegumes = new products_1.Snack("PretMix", 2.34, products_1.SnackCategory.Candy, products_1.SnackType.Fruitgom, products_1.SnackBrand.RedBand, new general_1.Energy(56, general_1.UnitOfMeasurement.Calorie));
-var bandAid = new products_1.Medicine("Hansaplast BandAid", 1.25, medicine_1.MedicineType.BandAid, [
-    medicine_1.Illness.Wound
-]);
-// create Inventory and add the created products with a specified quantity
-var inventory = new inventory_1.Inventory();
-inventory.add(marlboroCigarette, 439);
-inventory.add(davidoffCigarette, 257);
-inventory.add(winegumes, 100);
-inventory.add(bandAid, 30);
-// print inventory to the console
-console.log(inventory.printList());
-console.log(marlboroCigarette.toString());
-console.log(davidoffCigarette.toString());
-console.log(winegumes.toString());
-console.log(bandAid.toString());
+var Main = /** @class */ (function () {
+    function Main() {
+        this.inventory = new inventory_1.Inventory(25, 30);
+    }
+    Main.prototype.createProducts = function () {
+        this.inventory.add(new products_1.Cigarrete("Marlboro cigarettes", 25.43, general_1.Brand.Marlboro), 150);
+        this.inventory.add(new products_1.Cigarrete("Davidoff cigarettes", 23.67, general_1.Brand.Davidoff, general_1.CigarreteType.Light, new general_1.Quantity(36, general_1.UnitOfMeasurement.Unit)), 57);
+        this.inventory.add(new products_1.Snack("PretMix", 2.34, general_1.SnackCategory.Candy, general_1.Brand.RedBand, general_1.SnackType.Fruitgom, new general_1.Quantity(56, general_1.UnitOfMeasurement.Calorie)), 40);
+        this.inventory.add(new products_1.Medicine("Hansaplast BandAid", 1.25, general_1.Brand.Hansaplast, general_1.MedicineType.BandAid, [general_1.Illness.Wound]), 30);
+        this.inventory.add(new products_1.Snack("PretMix", 2.34, general_1.SnackCategory.Candy, general_1.Brand.RedBand, general_1.SnackType.Fruitgom, new general_1.Quantity(56, general_1.UnitOfMeasurement.Calorie)), 3);
+        this.inventory.add(new products_1.Beverage("Coca Cola", 1.0, general_1.Brand.CocaCola, new general_1.Quantity(33, general_1.UnitOfMeasurement.CentiLiter), true), 16);
+        this.inventory.add(new products_1.Snack("PretMix", 2.34, general_1.SnackCategory.Candy, general_1.Brand.RedBand, general_1.SnackType.Fruitgom, new general_1.Quantity(56, general_1.UnitOfMeasurement.Calorie)), 3);
+    };
+    Main.prototype.printList = function () {
+        console.log(this.inventory.toString());
+    };
+    Main.prototype.printItems = function () {
+        console.log(this.inventory.printItems());
+    };
+    Main.prototype.printItem = function (id) {
+        try {
+            console.log(this.inventory.printItem(id));
+        }
+        catch (error) {
+            console.error(error.message);
+        }
+    };
+    return Main;
+}());
+exports.Main = Main;
+var main = new Main();
+main.createProducts();
+main.printList();
+main.printItems();

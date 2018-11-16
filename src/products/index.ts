@@ -1,4 +1,5 @@
 export { Beverage } from "./beverage";
-export { Cigarrete, CigarreteBrand, CigarreteType } from "./cigarette";
+export { Cigarrete } from "./cigarette";
 export { Medicine } from "./medicine";
-export { Snack, SnackBrand, SnackCategory, SnackType } from "./snack";
+export { Product } from "./product";
+export { Snack } from "./snack";

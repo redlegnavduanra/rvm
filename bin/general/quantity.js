@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Measurement = /** @class */ (function () {
-    function Measurement(amount, unitOfMeasurement) {
+var Quantity = /** @class */ (function () {
+    function Quantity(amount, unitOfMeasurement) {
         this.amount = amount;
         this.unitOfMeasurement = unitOfMeasurement;
     }
-    Measurement.prototype.toString = function () {
+    Quantity.prototype.toString = function () {
         return this.amount + " " + this.unitOfMeasurement;
     };
-    return Measurement;
+    return Quantity;
 }());
-exports.Measurement = Measurement;
+exports.Quantity = Quantity;

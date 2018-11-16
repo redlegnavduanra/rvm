@@ -1,59 +1,16 @@
 import { Product } from "./product";
-import { Energy } from "../general";
-
-export enum SnackCategory {
-    Biscuit = "Biscuit",
-    Candy = "Candy",
-    ChocoloteBar = "ChocolateBar",
-    EnergyBar = "EnergyBar",
-    PotatoChips = "Chips"
-}
-
-export enum SnackBrand {
-    Haribo = "Haribo",
-    Lays = "Lays",
-    Liga = "Liga",
-    Mars = "Mars",
-    RedBand = "Red Band"
-}
-
-export enum SnackType {
-    Fruitgom = "Fruitgom",
-    Veggie = "Veggie",
-    Drop = "Drop",
-    SugarFree = "Sugar free",
-    LessSugar = "Less Sugar",
-    Doritos = "Doritos",
-    Cheetos = "Cheetos",
-    Wokkels = "Wokkels",
-    Evergeen = "Evergreen",
-    MilkBreak = "Milkbreak",
-    Belvita = "BelVita",
-    Mars = "Mars",
-    Snickers = "Snickers",
-    Twix = "Twix",
-    Bounty = "Bounty",
-    MilkyWay = "Milky Way"
-}
+import { Quantity, Brand, SnackCategory, SnackType } from "./../general";
 
 export class Snack extends Product {
     constructor(
         protected _name: string,
         protected _price: number,
         private _category: SnackCategory,
+        protected _brand: Brand,
         private _type: SnackType,
-        private _brand: SnackBrand,
-        private _energy: Energy
+        private _energy: Quantity
     ) {
-        super(_name, _price);
-    }
-
-    get brand(): SnackBrand {
-        return this._brand;
-    }
-
-    set brand(brand: SnackBrand) {
-        this._brand = brand;
+        super(_name, _price, _brand);
     }
 
     get category(): SnackCategory {
@@ -64,11 +21,11 @@ export class Snack extends Product {
         this._category = category;
     }
 
-    get energy(): Energy {
+    get energy(): Quantity {
         return this._energy;
     }
 
-    set energy(energy: Energy) {
+    set energy(energy: Quantity) {
         this._energy = energy;
     }
 

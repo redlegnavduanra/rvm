@@ -14,25 +14,13 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var product_1 = require("./product");
-var CigarreteBrand;
-(function (CigarreteBrand) {
-    CigarreteBrand["Camel"] = "Camel";
-    CigarreteBrand["Davidoff"] = "Davidoff";
-    CigarreteBrand["Kent"] = "Kent";
-    CigarreteBrand["Marlboro"] = "Marlboro";
-})(CigarreteBrand = exports.CigarreteBrand || (exports.CigarreteBrand = {}));
-var CigarreteType;
-(function (CigarreteType) {
-    CigarreteType["Light"] = "Light";
-    CigarreteType["Menthol"] = "Menthol";
-    CigarreteType["Normal"] = "Normal";
-})(CigarreteType = exports.CigarreteType || (exports.CigarreteType = {}));
+var general_1 = require("./../general");
 var Cigarrete = /** @class */ (function (_super) {
     __extends(Cigarrete, _super);
     function Cigarrete(_name, _price, _brand, _type, _volume) {
-        if (_type === void 0) { _type = CigarreteType.Normal; }
-        if (_volume === void 0) { _volume = 12; }
-        var _this = _super.call(this, _name, _price) || this;
+        if (_type === void 0) { _type = general_1.CigarreteType.Normal; }
+        if (_volume === void 0) { _volume = new general_1.Quantity(12, general_1.UnitOfMeasurement.Unit); }
+        var _this = _super.call(this, _name, _price, _brand) || this;
         _this._name = _name;
         _this._price = _price;
         _this._brand = _brand;

@@ -1,57 +1,119 @@
 #!/usr/bin/env node
 
 import { Inventory } from "./inventory/inventory";
-import { Energy, UnitOfMeasurement } from "./general";
 import {
-    Cigarrete,
-    CigarreteBrand,
+    Brand,
     CigarreteType,
-    Medicine,
-    Snack,
+    Illness,
+    Quantity,
+    MedicineType,
     SnackType,
-    SnackBrand,
-    SnackCategory
-} from "./products";
-import { MedicineType, Illness } from "./products/medicine";
+    SnackCategory,
+    UnitOfMeasurement
+} from "./general";
+import { Cigarrete, Medicine, Snack, Beverage } from "./products";
 
-// create a few products
-const marlboroCigarette = new Cigarrete(
-    "Marlboro cigarettes",
-    25.43,
-    CigarreteBrand.Marlboro
-);
+export class Main {
+    private inventory: Inventory;
 
-const davidoffCigarette = new Cigarrete(
-    "Davidoff cigarettes",
-    23.67,
-    CigarreteBrand.Davidoff,
-    CigarreteType.Light,
-    36
-);
+    constructor() {
+        this.inventory = new Inventory(25, 30);
+    }
 
-const winegumes = new Snack(
-    "PretMix",
-    2.34,
-    SnackCategory.Candy,
-    SnackType.Fruitgom,
-    SnackBrand.RedBand,
-    new Energy(56, UnitOfMeasurement.Calorie)
-);
+    createProducts() {
+        this.inventory.add(
+            new Cigarrete("Marlboro cigarettes", 25.43, Brand.Marlboro),
+            150
+        );
 
-const bandAid = new Medicine("Hansaplast BandAid", 1.25, MedicineType.BandAid, [
-    Illness.Wound
-]);
+        this.inventory.add(
+            new Cigarrete(
+                "Davidoff cigarettes",
+                23.67,
+                Brand.Davidoff,
+                CigarreteType.Light,
+                new Quantity(36, UnitOfMeasurement.Unit)
+            ),
+            57
+        );
 
-// create Inventory and add the created products with a specified quantity
-const inventory = new Inventory();
-inventory.add(marlboroCigarette, 439);
-inventory.add(davidoffCigarette, 257);
-inventory.add(winegumes, 100);
-inventory.add(bandAid, 30);
+        this.inventory.add(
+            new Snack(
+                "PretMix",
+                2.34,
+                SnackCategory.Candy,
+                Brand.RedBand,
+                SnackType.Fruitgom,
+                new Quantity(56, UnitOfMeasurement.Calorie)
+            ),
+            40
+        );
 
-// print inventory to the console
-console.log(inventory.printList());
-console.log(marlboroCigarette.toString());
-console.log(davidoffCigarette.toString());
-console.log(winegumes.toString());
-console.log(bandAid.toString());
+        this.inventory.add(
+            new Medicine(
+                "Hansaplast BandAid",
+                1.25,
+                Brand.Hansaplast,
+                MedicineType.BandAid,
+                [Illness.Wound]
+            ),
+            30
+        );
+
+        this.inventory.add(
+            new Snack(
+                "PretMix",
+                2.34,
+                SnackCategory.Candy,
+                Brand.RedBand,
+                SnackType.Fruitgom,
+                new Quantity(56, UnitOfMeasurement.Calorie)
+            ),
+            3
+        );
+
+        this.inventory.add(
+            new Beverage(
+                "Coca Cola",
+                1.0,
+                Brand.CocaCola,
+                new Quantity(33, UnitOfMeasurement.CentiLiter),
+                true
+            ),
+            16
+        );
+
+        this.inventory.add(
+            new Snack(
+                "PretMix",
+                2.34,
+                SnackCategory.Candy,
+                Brand.RedBand,
+                SnackType.Fruitgom,
+                new Quantity(56, UnitOfMeasurement.Calorie)
+            ),
+            3
+        );
+    }
+
+    printList() {
+        console.log(this.inventory.toString());
+    }
+
+    printItems() {
+        console.log(this.inventory.printItems());
+    }
+
+    printItem(id: number) {
+        try {
+            console.log(this.inventory.printItem(id));
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+}
+
+const main = new Main();
+main.createProducts();
+main.printList();
+main.printItems();

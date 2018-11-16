@@ -16,9 +16,38 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var product_1 = require("./product");
 var Beverage = /** @class */ (function (_super) {
     __extends(Beverage, _super);
-    function Beverage() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function Beverage(_name, _price, _brand, _volume, _isCooled) {
+        var _this = _super.call(this, _name, _price, _brand) || this;
+        _this._name = _name;
+        _this._price = _price;
+        _this._brand = _brand;
+        _this._volume = _volume;
+        _this._isCooled = _isCooled;
+        return _this;
     }
+    Object.defineProperty(Beverage.prototype, "isCooled", {
+        get: function () {
+            return this._isCooled;
+        },
+        set: function (isCooled) {
+            this._isCooled = isCooled;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Beverage.prototype, "volume", {
+        get: function () {
+            return this._volume;
+        },
+        set: function (volume) {
+            this._volume = volume;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Beverage.prototype.toString = function () {
+        return "Name: " + this.name + "; Price: " + this.price + "; Brand: " + this.brand + "; Volume: " + this.volume + "; Cooled: " + this.isCooled;
+    };
     return Beverage;
 }(product_1.Product));
 exports.Beverage = Beverage;
