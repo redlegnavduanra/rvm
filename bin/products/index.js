@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var beverage_1 = require("./beverage");
 exports.Beverage = beverage_1.Beverage;
 var cigarette_1 = require("./cigarette");
-exports.Cigarrete = cigarette_1.Cigarrete;
+exports.Cigarette = cigarette_1.Cigarette;
 var medicine_1 = require("./medicine");
 exports.Medicine = medicine_1.Medicine;
 var product_1 = require("./product");

@@ -5,7 +5,7 @@ var Inventory = /** @class */ (function () {
         this._maxRows = _maxRows;
         this._maxItemsPerRow = _maxItemsPerRow;
         this._products = [];
-        this._selectedProduct = -1;
+        this._selectedProducts = [];
     }
     Object.defineProperty(Inventory.prototype, "fullEmptyRows", {
         get: function () {
@@ -45,12 +45,10 @@ var Inventory = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Inventory.prototype, "selectedProduct", {
+    Object.defineProperty(Inventory.prototype, "selectedProducts", {
         get: function () {
-            if (this._selectedProduct < 0) {
-                throw Error("No product selected");
-            }
-            return this._products[this._selectedProduct];
+            var _this = this;
+            return this._selectedProducts.map(function (id) { return _this._products[id]; });
         },
         enumerable: true,
         configurable: true
@@ -88,12 +86,12 @@ var Inventory = /** @class */ (function () {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Cannot print item: invalid id provided");
         }
-        return "" + this._products[id];
+        console.log("" + this._products[id]);
     };
     Inventory.prototype.printItems = function () {
         var result = "";
         this._products.forEach(function (product) { return (result += "\n" + product[0]); });
-        return result;
+        console.log(result);
     };
     Inventory.prototype.printList = function () {
         console.log("" + this);
@@ -105,16 +103,24 @@ var Inventory = /** @class */ (function () {
             this._products[prdIdx][1] -= quantity;
         }
     };
+    Inventory.prototype.removeProduct = function (id) {
+        if (id < 0 || id >= this._products.length) {
+            throw new Error("Cannot remove item: invalid id provided");
+        }
+        return this._products.splice(id, 1);
+    };
     Inventory.prototype.selectProduct = function (id) {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Index out of bounds");
         }
-        this._selectedProduct = id;
+        if (!this._selectedProducts[id]) {
+            this._selectedProducts.push(id);
+        }
     };
     // render a nice output to the console
     Inventory.prototype.toString = function () {
         var _this = this;
-        var result = "\n*********************************************************************************************************************************************************\n*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tQuantity\t|\tUsed Rows\t|\tFree lots\t*\n*-------------------------------------------------------------------------------------------------------------------------------------------------------*\n";
+        var result = "\n\n\n*********************************************************************************************************************************************************\n*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tIn Stock\t|\tUsed Rows\t|\tFree Slots\t*\n*-------------------------------------------------------------------------------------------------------------------------------------------------------*\n";
         this._products.forEach(function (product, idx) {
             var prodNameTabs = 4 - product[0].name.length / 8;
             var tabs = "";
@@ -126,9 +132,9 @@ var Inventory = /** @class */ (function () {
                 : "";
             result += "*\t" + idx + "\t|\t" + product[0].name + tabs + "|\t\u20AC " + product[0].price.toFixed(2) + "\t\t|\t" + product[1] + "\t\t|\t" + Math.ceil(product[1] / _this.maxItemsPerRow) + "\t\t|\t" + availableSlots + "\t\t*\n";
         });
-        result += "*********************************************************************************************************************************************************\n*\tTotal Stock size: " + this.size + " (" + this.maxRows + " rows of " + this.maxItemsPerRow + " slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: " + (this.maxRows -
+        result += "*********************************************************************************************************************************************************\n*\tTotal inventory size: " + this.size + " (" + this.maxRows + " rows of " + this.maxItemsPerRow + " slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: " + (this.maxRows -
             this
-                .fullEmptyRows) + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: " + this.fullEmptyRows + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*********************************************************************************************************************************************************\n";
+                .fullEmptyRows) + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: " + this.fullEmptyRows + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*********************************************************************************************************************************************************\n\n\n";
         return result;
     };
     return Inventory;

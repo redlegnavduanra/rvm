@@ -6,7 +6,7 @@ import {
     UnitOfMeasurement
 } from "./../general";
 
-export class Cigarrete extends Product {
+export class Cigarette extends Product {
     constructor(
         protected _name: string,
         protected _price: number,

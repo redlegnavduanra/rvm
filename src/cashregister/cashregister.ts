@@ -9,6 +9,10 @@ export class CashRegister {
         this._receipts = [];
     }
 
+    get inventory(): Inventory {
+        return this._inventory;
+    }
+
     get receipt(): Receipt {
         if (this.receipts.length === 0) {
             throw Error("Cannot get receipt: no receipt initialized");
@@ -21,8 +25,9 @@ export class CashRegister {
         return this._receipts;
     }
 
-    addProduct(product: Product, quantity: number = 1) {
-        this.receipt.addProduct(product, quantity);
+    selectProduct(id: number, quantity: number = 1) {
+        this.inventory.selectProduct(id);
+        this.receipt.addProduct(this.inventory.getProduct(id)[0], quantity);
     }
 
     createReceipt() {
@@ -34,9 +39,40 @@ export class CashRegister {
 
         if (this.receipt.totalPaidAmount >= this.receipt.totalPayableAmount) {
             this.receipt.products.forEach(prd => {
-                this._inventory.remove(prd[0], prd[1]);
+                this.inventory.remove(prd[0], prd[1]);
             });
         }
+    }
+
+    printBrand() {
+        console.log(`
+
+
+*********************************************************************************************************************************************************
+
+                rrrrr    eeeeeeee  dddddd    ll      eeeeeeee    gggggggg    ""    ssssss          vv           vv  mm         mm
+                rr  rr   eee       dd    d   ll      ee        gg       gg   ""   ss                vv         vv   mmm       mmm
+                rr  rr   ee        dd     d  ll      ee        gg                 ss                 vv       vv    mmmm     mmmm
+                rrrr     eeeee     dd     d  ll      eeeee     gg   ggggg          ssssss             vv     vv     mm mm   mm mm
+                rr  r    ee        dd     d  ll      ee        gg        gg             ss             vv   vv      mm  mm mm  mm
+                rr   r   ee        dd    d   ll      ee        gg        gg             ss              vv vv       mm   mmm   mm
+                rr    r  eeeeeeee  dddddd    llllll  eeeeeeee    gggggggg          ssssss                vvv        mm         mm 
+  
+*********************************************************************************************************************************************************
+
+        `);
+    }
+
+    printInventory() {
+        this.inventory.printList();
+    }
+
+    printProduct(id: number) {
+        this.inventory.printItem(id);
+    }
+
+    printReceipt() {
+        this.receipt.printReceipt();
     }
 
     removeProduct(product: Product, quantity: number = 1) {

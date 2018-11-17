@@ -1,12 +1,12 @@
 import { Product, ProductLine } from "../products/product";
 
 export class Inventory {
-    private _products: Array<ProductLine>;
-    private _selectedProduct: number;
+    private _products: ProductLine[];
+    private _selectedProducts: number[];
 
     constructor(private _maxRows: number, private _maxItemsPerRow: number) {
         this._products = [];
-        this._selectedProduct = -1;
+        this._selectedProducts = [];
     }
 
     get fullEmptyRows(): number {
@@ -37,12 +37,8 @@ export class Inventory {
         this._maxItemsPerRow = maxItems;
     }
 
-    get selectedProduct(): ProductLine {
-        if (this._selectedProduct < 0) {
-            throw Error("No product selected");
-        }
-
-        return this._products[this._selectedProduct];
+    get selectedProducts(): ProductLine[] {
+        return this._selectedProducts.map(id => this._products[id]);
     }
 
     get size(): number {
@@ -78,18 +74,18 @@ export class Inventory {
         return this._products[id];
     }
 
-    printItem(id: number): string {
+    printItem(id: number) {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Cannot print item: invalid id provided");
         }
 
-        return "" + this._products[id];
+        console.log("" + this._products[id]);
     }
 
-    printItems(): string {
+    printItems() {
         let result = "";
         this._products.forEach(product => (result += "\n" + product[0]));
-        return result;
+        console.log(result);
     }
 
     printList() {
@@ -106,19 +102,31 @@ export class Inventory {
         }
     }
 
+    removeProduct(id: number): ProductLine[] {
+        if (id < 0 || id >= this._products.length) {
+            throw new Error("Cannot remove item: invalid id provided");
+        }
+
+        return this._products.splice(id, 1);
+    }
+
     selectProduct(id: number) {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Index out of bounds");
         }
 
-        this._selectedProduct = id;
+        if (!this._selectedProducts[id]) {
+            this._selectedProducts.push(id);
+        }
     }
 
     // render a nice output to the console
     toString(): string {
         let result = `
+
+
 *********************************************************************************************************************************************************
-*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tQuantity\t|\tUsed Rows\t|\tFree lots\t*
+*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tIn Stock\t|\tUsed Rows\t|\tFree Slots\t*
 *-------------------------------------------------------------------------------------------------------------------------------------------------------*
 `;
         this._products.forEach((product, idx) => {
@@ -143,7 +151,7 @@ export class Inventory {
         });
 
         result += `*********************************************************************************************************************************************************
-*\tTotal Stock size: ${this.size} (${this.maxRows} rows of ${
+*\tTotal inventory size: ${this.size} (${this.maxRows} rows of ${
             this.maxItemsPerRow
         } slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: ${this.maxRows -
             this
@@ -151,6 +159,8 @@ export class Inventory {
             this.fullEmptyRows
         }\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*
 *********************************************************************************************************************************************************
+
+
 `;
 
         return result;

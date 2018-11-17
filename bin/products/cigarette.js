@@ -15,9 +15,9 @@ var __extends = (this && this.__extends) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var product_1 = require("./product");
 var general_1 = require("./../general");
-var Cigarrete = /** @class */ (function (_super) {
-    __extends(Cigarrete, _super);
-    function Cigarrete(_name, _price, _brand, _type, _volume) {
+var Cigarette = /** @class */ (function (_super) {
+    __extends(Cigarette, _super);
+    function Cigarette(_name, _price, _brand, _type, _volume) {
         if (_type === void 0) { _type = general_1.CigarreteType.Normal; }
         if (_volume === void 0) { _volume = new general_1.Quantity(12, general_1.UnitOfMeasurement.Unit); }
         var _this = _super.call(this, _name, _price, _brand) || this;
@@ -28,7 +28,7 @@ var Cigarrete = /** @class */ (function (_super) {
         _this._volume = _volume;
         return _this;
     }
-    Object.defineProperty(Cigarrete.prototype, "brand", {
+    Object.defineProperty(Cigarette.prototype, "brand", {
         get: function () {
             return this._brand;
         },
@@ -38,7 +38,7 @@ var Cigarrete = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Cigarrete.prototype, "type", {
+    Object.defineProperty(Cigarette.prototype, "type", {
         get: function () {
             return this._type;
         },
@@ -48,7 +48,7 @@ var Cigarrete = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Cigarrete.prototype, "volume", {
+    Object.defineProperty(Cigarette.prototype, "volume", {
         get: function () {
             return this._volume;
         },
@@ -59,9 +59,9 @@ var Cigarrete = /** @class */ (function (_super) {
         configurable: true
     });
     // render a nice output to the console
-    Cigarrete.prototype.toString = function () {
+    Cigarette.prototype.toString = function () {
         return "Name: " + this.name + "; Price: " + this.price + "; Brand: " + this.brand + "; Volume: " + this._volume + "; Type: " + this.type;
     };
-    return Cigarrete;
+    return Cigarette;
 }(product_1.Product));
-exports.Cigarrete = Cigarrete;
+exports.Cigarette = Cigarette;

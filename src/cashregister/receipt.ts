@@ -1,7 +1,7 @@
 import { ProductLine, Product } from "./../products";
 
 export class Receipt {
-    private _receiptLines: Array<ProductLine>;
+    private _receiptLines: ProductLine[];
     private _totalPaidAmount: number;
     private _totalPayableAmount: number;
 
@@ -11,7 +11,7 @@ export class Receipt {
         this._totalPayableAmount = 0;
     }
 
-    get products(): Array<ProductLine> {
+    get products(): ProductLine[] {
         return this._receiptLines;
     }
 
