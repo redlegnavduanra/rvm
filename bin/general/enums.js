@@ -45,6 +45,11 @@ var MedicineType;
     MedicineType["Bandage"] = "Bandage";
     MedicineType["Paracetamol"] = "Paracetamol";
 })(MedicineType = exports.MedicineType || (exports.MedicineType = {}));
+var ReceiptStatus;
+(function (ReceiptStatus) {
+    ReceiptStatus["Concept"] = "Concept";
+    ReceiptStatus["Closed"] = "Closed";
+})(ReceiptStatus = exports.ReceiptStatus || (exports.ReceiptStatus = {}));
 var SnackCategory;
 (function (SnackCategory) {
     SnackCategory["Biscuit"] = "Biscuit";

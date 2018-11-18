@@ -74,11 +74,23 @@ var Inventory = /** @class */ (function () {
             prdIdx < 0
                 ? this._products.push([product, quantity])
                 : (this._products[prdIdx][1] += quantity);
+            this.printSuccess("Succesfully added " + product.name + " to inventory");
+        }
+    };
+    Inventory.prototype.cancelSelection = function () {
+        this.selectedProducts.splice(0);
+    };
+    Inventory.prototype.deliver = function (product, quantity) {
+        if (quantity === void 0) { quantity = 1; }
+        var prdIdx = this._products.findIndex(function (prd) { return prd[0].name === product.name; });
+        if (prdIdx >= 0 && quantity <= this._products[prdIdx][1]) {
+            this._products[prdIdx][1] -= quantity;
+            this.printSuccess("\n\nSuccesfully delivered " + quantity + " " + product.name + "\n\n");
         }
     };
     Inventory.prototype.getProduct = function (id) {
         if (id < 0 || id >= this._products.length) {
-            throw new Error("Cannot get product: invalid id provided");
+            this.printError("Cannot get product: invalid id provided");
         }
         return this._products[id];
     };
@@ -96,17 +108,17 @@ var Inventory = /** @class */ (function () {
     Inventory.prototype.printList = function () {
         console.log("" + this);
     };
-    Inventory.prototype.remove = function (product, quantity) {
-        if (quantity === void 0) { quantity = 1; }
-        var prdIdx = this._products.findIndex(function (prd) { return prd[0].name === product.name; });
-        if (prdIdx >= 0 && quantity <= this._products[prdIdx][1]) {
-            this._products[prdIdx][1] -= quantity;
-        }
+    Inventory.prototype.printSuccess = function (message) {
+        console.log(message);
+    };
+    Inventory.prototype.printError = function (message) {
+        console.error(message);
     };
     Inventory.prototype.removeProduct = function (id) {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Cannot remove item: invalid id provided");
         }
+        this.printSuccess("\n\nSuccesfully removed " + this._products[id][0].name + " from inventory\n\n");
         return this._products.splice(id, 1);
     };
     Inventory.prototype.selectProduct = function (id) {
@@ -117,10 +129,9 @@ var Inventory = /** @class */ (function () {
             this._selectedProducts.push(id);
         }
     };
-    // render a nice output to the console
     Inventory.prototype.toString = function () {
         var _this = this;
-        var result = "\n\n\n*********************************************************************************************************************************************************\n*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tIn Stock\t|\tUsed Rows\t|\tFree Slots\t*\n*-------------------------------------------------------------------------------------------------------------------------------------------------------*\n";
+        var result = "\n        \n*********************************************************************************************************************************************************\n*\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tIn Stock\t|\tUsed Rows\t|\tFree Slots\t*\n*-------------------------------------------------------------------------------------------------------------------------------------------------------*\n";
         this._products.forEach(function (product, idx) {
             var prodNameTabs = 4 - product[0].name.length / 8;
             var tabs = "";
@@ -134,7 +145,7 @@ var Inventory = /** @class */ (function () {
         });
         result += "*********************************************************************************************************************************************************\n*\tTotal inventory size: " + this.size + " (" + this.maxRows + " rows of " + this.maxItemsPerRow + " slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: " + (this.maxRows -
             this
-                .fullEmptyRows) + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: " + this.fullEmptyRows + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*********************************************************************************************************************************************************\n\n\n";
+                .fullEmptyRows) + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: " + this.fullEmptyRows + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*********************************************************************************************************************************************************\n\n";
         return result;
     };
     return Inventory;

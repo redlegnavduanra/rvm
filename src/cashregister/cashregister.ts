@@ -1,6 +1,7 @@
 import { Receipt } from "./receipt";
 import { Product } from "./../products";
 import { Inventory } from "../inventory";
+import { ReceiptStatus } from "../general";
 
 export class CashRegister {
     private _receipts: Receipt[];
@@ -14,10 +15,6 @@ export class CashRegister {
     }
 
     get receipt(): Receipt {
-        if (this.receipts.length === 0) {
-            throw Error("Cannot get receipt: no receipt initialized");
-        }
-
         return this.receipts[this.receipts.length - 1];
     }
 
@@ -25,42 +22,35 @@ export class CashRegister {
         return this._receipts;
     }
 
-    selectProduct(id: number, quantity: number = 1) {
-        this.inventory.selectProduct(id);
-        this.receipt.addProduct(this.inventory.getProduct(id)[0], quantity);
+    cancelReceipt() {
+        if (this.receipt) {
+            this.receipts.splice(this.receipts.length - 1, 1);
+            this.inventory.cancelSelection();
+        }
     }
 
     createReceipt() {
         this.receipts.push(new Receipt());
     }
 
-    payAmount(amount: number) {
-        this.receipt.payAmount(amount);
-
+    finalize() {
         if (this.receipt.totalPaidAmount >= this.receipt.totalPayableAmount) {
             this.receipt.products.forEach(prd => {
-                this.inventory.remove(prd[0], prd[1]);
+                this.inventory.deliver(prd[0], prd[1]);
             });
+
+            this.receipt.finalize();
         }
     }
 
-    printBrand() {
-        console.log(`
+    payAmount(amount: number) {
+        if (!this.receipt || this.receipt.status === ReceiptStatus.Closed) {
+            this.createReceipt();
+        }
 
+        this.receipt.payAmount(amount);
 
-*********************************************************************************************************************************************************
-
-                rrrrr    eeeeeeee  dddddd    ll      eeeeeeee    gggggggg    ""    ssssss          vv           vv  mm         mm
-                rr  rr   eee       dd    d   ll      ee        gg       gg   ""   ss                vv         vv   mmm       mmm
-                rr  rr   ee        dd     d  ll      ee        gg                 ss                 vv       vv    mmmm     mmmm
-                rrrr     eeeee     dd     d  ll      eeeee     gg   ggggg          ssssss             vv     vv     mm mm   mm mm
-                rr  r    ee        dd     d  ll      ee        gg        gg             ss             vv   vv      mm  mm mm  mm
-                rr   r   ee        dd    d   ll      ee        gg        gg             ss              vv vv       mm   mmm   mm
-                rr    r  eeeeeeee  dddddd    llllll  eeeeeeee    gggggggg          ssssss                vvv        mm         mm 
-  
-*********************************************************************************************************************************************************
-
-        `);
+        this.printSuccess(`\n\nSuccesfully paid ${amount.toFixed(2)}\n\n`);
     }
 
     printInventory() {
@@ -68,14 +58,58 @@ export class CashRegister {
     }
 
     printProduct(id: number) {
-        this.inventory.printItem(id);
+        try {
+            this.inventory.printItem(id);
+        } catch (error) {
+            this.printError(error.message);
+        }
     }
 
     printReceipt() {
         this.receipt.printReceipt();
     }
 
+    printReceipts() {
+        this.receipts.forEach(receipt => receipt.printReceipt());
+    }
+
+    private printSuccess(message: string) {
+        console.log(message);
+    }
+
+    private printError(message: string) {
+        console.error(message);
+    }
+
     removeProduct(product: Product, quantity: number = 1) {
         this.receipt.removeProduct(product, quantity);
+    }
+
+    selectProduct(id: number, quantity: number = 1) {
+        try {
+            if (quantity > this.inventory.getProduct(id)[1]) {
+                this.printError(
+                    `\n\nCannot provide ${quantity} ${
+                        this.inventory.getProduct(id)[0].name
+                    }, only ${this.inventory.getProduct(id)[1]} in stock\n\n`
+                );
+                return;
+            }
+
+            if (!this.receipt || this.receipt.status === ReceiptStatus.Closed) {
+                this.createReceipt();
+            }
+
+            this.inventory.selectProduct(id);
+            this.receipt.addProduct(this.inventory.getProduct(id)[0], quantity);
+
+            this.printSuccess(
+                `\n\nSuccesfully selected ${quantity} of ${
+                    this.inventory.getProduct(id)[0].name
+                }\n\n`
+            );
+        } catch (error) {
+            this.printError(error.message);
+        }
     }
 }

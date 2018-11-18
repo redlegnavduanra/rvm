@@ -1,18 +1,29 @@
 import { ProductLine, Product } from "./../products";
+import { ReceiptStatus } from "./../general";
 
 export class Receipt {
     private _receiptLines: ProductLine[];
+    private _status: ReceiptStatus;
     private _totalPaidAmount: number;
     private _totalPayableAmount: number;
 
     constructor() {
         this._receiptLines = [];
+        this._status = ReceiptStatus.Concept;
         this._totalPaidAmount = 0;
         this._totalPayableAmount = 0;
     }
 
     get products(): ProductLine[] {
         return this._receiptLines;
+    }
+
+    get status(): ReceiptStatus {
+        return this._status;
+    }
+
+    set status(status: ReceiptStatus) {
+        this._status = status;
     }
 
     get totalPaidAmount(): number {
@@ -45,6 +56,10 @@ export class Receipt {
         this.totalPayableAmount += quantity * product.price;
     }
 
+    finalize() {
+        this.status = ReceiptStatus.Closed;
+    }
+
     removeProduct(product: Product, quantity: number = 1) {
         const prdIdx = this._receiptLines.findIndex(
             prd => prd[0].name === product.name
@@ -68,10 +83,10 @@ export class Receipt {
 
     toString(): string {
         const title =
-            this.totalPaidAmount >= this.totalPayableAmount
+            this.status === ReceiptStatus.Closed
                 ? ` YOUR PURCHASE`
                 : `    YOUR ORDER`;
-        let result = `
+        let result = `\n
 *****************************************************************
 *\t\t\t${title}\t\t\t\t*
 *****************************************************************
@@ -87,7 +102,7 @@ export class Receipt {
 
         result += `*\t\t\t\t\t\t\t\t*
 *\t\t\t\t\t\t\t\t*
-*   Total:\t\t\t\t\t€ ${this.totalPayableAmount}\t\t*
+*   Total:\t\t\t\t\t€ ${this.totalPayableAmount.toFixed(2)}\t\t*
 *---------------------------------------------------------------*
 *   Paid:\t\t\t\t\t€ ${this.totalPaidAmount.toFixed(2)}\t\t*`;
 
@@ -98,7 +113,7 @@ export class Receipt {
                   ).toFixed(2)}\t\t*`
                 : ``;
         result += `
-*****************************************************************`;
+*****************************************************************\n\n`;
         return result;
     }
 }

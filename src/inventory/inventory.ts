@@ -63,12 +63,31 @@ export class Inventory {
             prdIdx < 0
                 ? this._products.push([product, quantity])
                 : (this._products[prdIdx][1] += quantity);
+
+            this.printSuccess(`Succesfully added ${product.name} to inventory`);
+        }
+    }
+
+    cancelSelection() {
+        this.selectedProducts.splice(0);
+    }
+
+    deliver(product: Product, quantity: number = 1) {
+        const prdIdx = this._products.findIndex(
+            prd => prd[0].name === product.name
+        );
+
+        if (prdIdx >= 0 && quantity <= this._products[prdIdx][1]) {
+            this._products[prdIdx][1] -= quantity;
+            this.printSuccess(
+                `\n\nSuccesfully delivered ${quantity} ${product.name}\n\n`
+            );
         }
     }
 
     getProduct(id: number): ProductLine {
         if (id < 0 || id >= this._products.length) {
-            throw new Error("Cannot get product: invalid id provided");
+            this.printError("Cannot get product: invalid id provided");
         }
 
         return this._products[id];
@@ -92,14 +111,12 @@ export class Inventory {
         console.log("" + this);
     }
 
-    remove(product: Product, quantity: number = 1) {
-        const prdIdx = this._products.findIndex(
-            prd => prd[0].name === product.name
-        );
+    private printSuccess(message: string) {
+        console.log(message);
+    }
 
-        if (prdIdx >= 0 && quantity <= this._products[prdIdx][1]) {
-            this._products[prdIdx][1] -= quantity;
-        }
+    private printError(message: string) {
+        console.error(message);
     }
 
     removeProduct(id: number): ProductLine[] {
@@ -107,6 +124,11 @@ export class Inventory {
             throw new Error("Cannot remove item: invalid id provided");
         }
 
+        this.printSuccess(
+            `\n\nSuccesfully removed ${
+                this._products[id][0].name
+            } from inventory\n\n`
+        );
         return this._products.splice(id, 1);
     }
 
@@ -120,11 +142,9 @@ export class Inventory {
         }
     }
 
-    // render a nice output to the console
     toString(): string {
         let result = `
-
-
+        
 *********************************************************************************************************************************************************
 *\tid\t|\tName\t\t\t\t|\tPrice\t\t|\tIn Stock\t|\tUsed Rows\t|\tFree Slots\t*
 *-------------------------------------------------------------------------------------------------------------------------------------------------------*
@@ -158,10 +178,7 @@ export class Inventory {
                 .fullEmptyRows}\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: ${
             this.fullEmptyRows
         }\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*
-*********************************************************************************************************************************************************
-
-
-`;
+*********************************************************************************************************************************************************\n\n`;
 
         return result;
     }

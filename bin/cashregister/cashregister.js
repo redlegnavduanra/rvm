@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var receipt_1 = require("./receipt");
+var general_1 = require("../general");
 var CashRegister = /** @class */ (function () {
     function CashRegister(_inventory) {
         this._inventory = _inventory;
@@ -15,9 +16,6 @@ var CashRegister = /** @class */ (function () {
     });
     Object.defineProperty(CashRegister.prototype, "receipt", {
         get: function () {
-            if (this.receipts.length === 0) {
-                throw Error("Cannot get receipt: no receipt initialized");
-            }
             return this.receipts[this.receipts.length - 1];
         },
         enumerable: true,
@@ -30,38 +28,75 @@ var CashRegister = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    CashRegister.prototype.selectProduct = function (id, quantity) {
-        if (quantity === void 0) { quantity = 1; }
-        this.inventory.selectProduct(id);
-        this.receipt.addProduct(this.inventory.getProduct(id)[0], quantity);
+    CashRegister.prototype.cancelReceipt = function () {
+        if (this.receipt) {
+            this.receipts.splice(this.receipts.length - 1, 1);
+            this.inventory.cancelSelection();
+        }
     };
     CashRegister.prototype.createReceipt = function () {
         this.receipts.push(new receipt_1.Receipt());
     };
-    CashRegister.prototype.payAmount = function (amount) {
+    CashRegister.prototype.finalize = function () {
         var _this = this;
-        this.receipt.payAmount(amount);
         if (this.receipt.totalPaidAmount >= this.receipt.totalPayableAmount) {
             this.receipt.products.forEach(function (prd) {
-                _this.inventory.remove(prd[0], prd[1]);
+                _this.inventory.deliver(prd[0], prd[1]);
             });
+            this.receipt.finalize();
         }
     };
-    CashRegister.prototype.printBrand = function () {
-        console.log("\n\n\n*********************************************************************************************************************************************************\n\n                rrrrr    eeeeeeee  dddddd    ll      eeeeeeee    gggggggg    \"\"    ssssss          vv           vv  mm         mm\n                rr  rr   eee       dd    d   ll      ee        gg       gg   \"\"   ss                vv         vv   mmm       mmm\n                rr  rr   ee        dd     d  ll      ee        gg                 ss                 vv       vv    mmmm     mmmm\n                rrrr     eeeee     dd     d  ll      eeeee     gg   ggggg          ssssss             vv     vv     mm mm   mm mm\n                rr  r    ee        dd     d  ll      ee        gg        gg             ss             vv   vv      mm  mm mm  mm\n                rr   r   ee        dd    d   ll      ee        gg        gg             ss              vv vv       mm   mmm   mm\n                rr    r  eeeeeeee  dddddd    llllll  eeeeeeee    gggggggg          ssssss                vvv        mm         mm \n  \n*********************************************************************************************************************************************************\n\n        ");
+    CashRegister.prototype.payAmount = function (amount) {
+        if (!this.receipt || this.receipt.status === general_1.ReceiptStatus.Closed) {
+            this.createReceipt();
+        }
+        this.receipt.payAmount(amount);
+        this.printSuccess("\n\nSuccesfully paid " + amount.toFixed(2) + "\n\n");
     };
     CashRegister.prototype.printInventory = function () {
         this.inventory.printList();
     };
     CashRegister.prototype.printProduct = function (id) {
-        this.inventory.printItem(id);
+        try {
+            this.inventory.printItem(id);
+        }
+        catch (error) {
+            this.printError(error.message);
+        }
     };
     CashRegister.prototype.printReceipt = function () {
         this.receipt.printReceipt();
     };
+    CashRegister.prototype.printReceipts = function () {
+        this.receipts.forEach(function (receipt) { return receipt.printReceipt(); });
+    };
+    CashRegister.prototype.printSuccess = function (message) {
+        console.log(message);
+    };
+    CashRegister.prototype.printError = function (message) {
+        console.error(message);
+    };
     CashRegister.prototype.removeProduct = function (product, quantity) {
         if (quantity === void 0) { quantity = 1; }
         this.receipt.removeProduct(product, quantity);
+    };
+    CashRegister.prototype.selectProduct = function (id, quantity) {
+        if (quantity === void 0) { quantity = 1; }
+        try {
+            if (quantity > this.inventory.getProduct(id)[1]) {
+                this.printError("\n\nCannot provide " + quantity + " " + this.inventory.getProduct(id)[0].name + ", only " + this.inventory.getProduct(id)[1] + " in stock\n\n");
+                return;
+            }
+            if (!this.receipt || this.receipt.status === general_1.ReceiptStatus.Closed) {
+                this.createReceipt();
+            }
+            this.inventory.selectProduct(id);
+            this.receipt.addProduct(this.inventory.getProduct(id)[0], quantity);
+            this.printSuccess("\n\nSuccesfully selected " + quantity + " of " + this.inventory.getProduct(id)[0].name + "\n\n");
+        }
+        catch (error) {
+            this.printError(error.message);
+        }
     };
     return CashRegister;
 }());

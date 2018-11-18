@@ -135,10 +135,69 @@ exports.addSnackQts = [
         default: 2
     }
 ];
-exports.removeProducsQts = [
+exports.cancelQts = [
     {
         type: "confirm",
         name: "confirm",
         message: "Are you sure"
+    }
+];
+exports.homeChoices = [
+    "Add product to inventory",
+    "Remove product from inventory",
+    "Show all receipts",
+    "Show inventory",
+    "Select product",
+    "Pay",
+    "Finish transaction",
+    "Show order",
+    "Cancel/Refund",
+    "Quit"
+];
+exports.homeQts = [
+    {
+        type: "list",
+        name: "home",
+        message: "Home screen",
+        pageSize: 15
+    }
+];
+exports.payQts = [
+    {
+        type: "input",
+        name: "amount",
+        message: "Enter amount"
+    }
+];
+exports.printReceiptQts = [
+    {
+        type: "confirm",
+        name: "printreceipt",
+        message: "Print receipt?"
+    }
+];
+exports.removeProducsQts = [
+    {
+        type: "input",
+        name: "id",
+        message: "Enter product id"
+    },
+    {
+        type: "confirm",
+        name: "confirm",
+        message: "Are you sure"
+    }
+];
+exports.selectProductQts = [
+    {
+        type: "input",
+        name: "id",
+        message: "Enter product id"
+    },
+    {
+        type: "input",
+        name: "quantity",
+        message: "Enter quantity",
+        default: "1"
     }
 ];

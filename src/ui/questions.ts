@@ -157,10 +157,75 @@ export const addSnackQts: Object[] = [
     }
 ];
 
-export const removeProducsQts: Object[] = [
+export const cancelQts: Object[] = [
     {
         type: "confirm",
         name: "confirm",
         message: "Are you sure"
+    }
+];
+
+export const homeChoices: string[] = [
+    "Add product to inventory",
+    "Remove product from inventory",
+    "Show all receipts",
+    "Show inventory",
+    "Select product",
+    "Pay",
+    "Finish transaction",
+    "Show order",
+    "Cancel/Refund",
+    "Quit"
+];
+
+export const homeQts: Object[] = [
+    {
+        type: "list",
+        name: "home",
+        message: "Home screen",
+        pageSize: 15
+    }
+];
+
+export const payQts: Object[] = [
+    {
+        type: "input",
+        name: "amount",
+        message: "Enter amount"
+    }
+];
+
+export const printReceiptQts: Object[] = [
+    {
+        type: "confirm",
+        name: "printreceipt",
+        message: "Print receipt?"
+    }
+];
+
+export const removeProducsQts: Object[] = [
+    {
+        type: "input",
+        name: "id",
+        message: "Enter product id"
+    },
+    {
+        type: "confirm",
+        name: "confirm",
+        message: "Are you sure"
+    }
+];
+
+export const selectProductQts: Object[] = [
+    {
+        type: "input",
+        name: "id",
+        message: "Enter product id"
+    },
+    {
+        type: "input",
+        name: "quantity",
+        message: "Enter quantity",
+        default: "1"
     }
 ];

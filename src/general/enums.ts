@@ -43,6 +43,11 @@ export enum MedicineType {
     Paracetamol = "Paracetamol"
 }
 
+export enum ReceiptStatus {
+    Concept = "Concept",
+    Closed = "Closed"
+}
+
 export enum SnackCategory {
     Biscuit = "Biscuit",
     Candy = "Candy",
