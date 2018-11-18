@@ -29,8 +29,16 @@ export class Beverage extends Product {
     }
 
     toString(): string {
-        return `Name: ${this.name}; Price: ${this.price}; Brand: ${
-            this.brand
-        }; Volume: ${this.volume}; Cooled: ${this.isCooled}`;
+        return `\n
+*****************************************************************
+*\t\t\tBeverage\t\t\t\t*
+*****************************************************************
+\tName: ${this.name}
+        
+\tPrice: ${this.price.toFixed(2)}
+\tBrand: ${this.brand}
+\tVolume: ${this.volume}
+\tCooled: ${this.isCooled}
+*****************************************************************`;
     }
 }

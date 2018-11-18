@@ -38,8 +38,21 @@ export class Snack extends Product {
     }
 
     toString() {
-        return `Name: ${this.name}; Price: ${this.price}; Category: ${
-            this.category
-        }; Type: ${this.type}; Brand: ${this.brand}; Energy: ${this.energy}`;
+        return `\n
+*****************************************************************
+*\t\t\tSnack\t\t\t\t\t*
+*****************************************************************
+\tName: ${this.name}
+        
+\tPrice: ${this.price.toFixed(2)}
+\tBrand: ${this.brand}
+\tCategory: ${this.category}
+\tType: ${this.type}
+\tEnergy: ${this.energy}
+*****************************************************************`;
+
+        //     `Name: ${this.name}; Price: ${this.price}; Category: ${
+        //     this.category
+        // }; Type: ${this.type}; Brand: ${this.brand}; Energy: ${this.energy}`;
     }
 }

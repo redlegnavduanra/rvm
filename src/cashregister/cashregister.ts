@@ -56,12 +56,14 @@ export class CashRegister {
                       this.receipt.totalPayableAmount -
                       this.receipt.totalPaidAmount
                   ).toFixed(2)}`
-                : `Change:\t\t\t${(
+                : this.receipt.products.length > 0
+                ? `Change:\t\t\t${(
                       this.receipt.totalPaidAmount -
                       this.receipt.totalPayableAmount
                   ).toFixed(
                       2
-                  )}\n\nPlease finish transaction to get your products`;
+                  )}\n\nPlease finish transaction to get your products`
+                : ``;
         this.printSuccess(
             `\n\nSuccesfully paid:\t${amount.toFixed(
                 2

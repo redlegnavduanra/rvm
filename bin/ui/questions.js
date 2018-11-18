@@ -36,7 +36,7 @@ exports.addBeverageQts = [
     {
         type: "input",
         name: "volumeQnt",
-        message: "Enter volume quantity",
+        message: "Enter the volume of this beverage",
         default: "33"
     },
     {
@@ -70,13 +70,13 @@ exports.addCigaretteQts = [
     {
         type: "input",
         name: "volumeQnt",
-        message: "Enter volume quantity",
+        message: "Enter the amount of cigarettes in this product",
         default: "36"
     },
     {
         type: "list",
         name: "volumeUoM",
-        message: "Select volume unit of measurement",
+        message: "Select unit of measurement for the amount of cigarettes",
         choices: Object.keys(general_1.UnitOfMeasurement).map(function (key) { return general_1.UnitOfMeasurement[key]; }),
         default: 4
     }
@@ -125,12 +125,12 @@ exports.addSnackQts = [
     {
         type: "input",
         name: "energyQnt",
-        message: "Enter energy quantity"
+        message: "Enter the amount of energy in this snack"
     },
     {
         type: "list",
         name: "energyUoM",
-        message: "Select energy unit of measurement",
+        message: "Select unit of measurement for the amount of energy in this snack",
         choices: Object.keys(general_1.UnitOfMeasurement).map(function (key) { return general_1.UnitOfMeasurement[key]; }),
         default: 2
     }
@@ -147,6 +147,7 @@ exports.homeChoices = [
     "Remove product from inventory",
     "Show all receipts",
     "Show available products",
+    "Show details of specific product",
     "Select product",
     "Show order",
     "Pay",
@@ -167,6 +168,13 @@ exports.payQts = [
         type: "input",
         name: "amount",
         message: "Enter amount"
+    }
+];
+exports.printProductQts = [
+    {
+        type: "input",
+        name: "id",
+        message: "Enter id of the product you want to view"
     }
 ];
 exports.printReceiptQts = [

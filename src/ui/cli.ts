@@ -11,6 +11,7 @@ import {
     homeChoices,
     homeQts,
     payQts,
+    printProductQts,
     printReceiptQts,
     removeProducsQts,
     selectProductQts
@@ -297,7 +298,7 @@ export class CLI {
     }
 
     private home() {
-        let choices: string[] = homeChoices;
+        let choices: string[] = [...homeChoices];
         // check for admin rights
         if (!this.isAdmin) {
             choices = choices.filter((itm: string) => {
@@ -353,34 +354,37 @@ export class CLI {
 
         inquirer.prompt(homeQts).then(ans => {
             switch ((ans as any).home) {
-                case "Add product to inventory":
+                case homeChoices[0]:
                     this.addProduct();
                     break;
-                case "Remove product from inventory":
+                case homeChoices[1]:
                     this.removeProducts();
                     break;
-                case "Show all receipts":
+                case homeChoices[2]:
                     this.printReceipts();
                     break;
-                case "Show available products":
+                case homeChoices[3]:
                     this.printInventory();
                     break;
-                case "Select product":
+                case homeChoices[4]:
+                    this.printProduct();
+                    break;
+                case homeChoices[5]:
                     this.selectProduct();
                     break;
-                case "Pay":
+                case homeChoices[6]:
+                    this.printSelectedProducts();
+                    break;
+                case homeChoices[7]:
                     this.payAmount();
                     break;
-                case "Finish transaction":
+                case homeChoices[8]:
                     this.finalize();
                     break;
-                case "Show order":
-                    this.printSeletedProducts();
-                    break;
-                case "Cancel":
+                case homeChoices[9]:
                     this.cancel();
                     break;
-                case "Quit":
+                case homeChoices[10]:
                     break;
             }
         });
@@ -422,13 +426,26 @@ export class CLI {
         this.home();
     }
 
-    private printSeletedProducts() {
-        this.cashRegister.printReceipt();
-        this.home();
+    private printProduct() {
+        inquirer.prompt(printProductQts).then(ans => {
+            const id = Number.parseInt((ans as any).id);
+            if (!isNaN(id)) {
+                this.cashRegister.printProduct(id);
+            } else {
+                console.error("Invalid input; please try again");
+            }
+
+            this.home();
+        });
     }
 
     private printReceipts() {
         this.cashRegister.printReceipts();
+        this.home();
+    }
+
+    private printSelectedProducts() {
+        this.cashRegister.printReceipt();
         this.home();
     }
 

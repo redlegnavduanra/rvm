@@ -57,7 +57,10 @@ var Snack = /** @class */ (function (_super) {
         configurable: true
     });
     Snack.prototype.toString = function () {
-        return "Name: " + this.name + "; Price: " + this.price + "; Category: " + this.category + "; Type: " + this.type + "; Brand: " + this.brand + "; Energy: " + this.energy;
+        return "\n\n*****************************************************************\n*\t\t\tSnack\t\t\t\t\t*\n*****************************************************************\n\tName: " + this.name + "\n        \n\tPrice: " + this.price.toFixed(2) + "\n\tBrand: " + this.brand + "\n\tCategory: " + this.category + "\n\tType: " + this.type + "\n\tEnergy: " + this.energy + "\n*****************************************************************";
+        //     `Name: ${this.name}; Price: ${this.price}; Category: ${
+        //     this.category
+        // }; Type: ${this.type}; Brand: ${this.brand}; Energy: ${this.energy}`;
     };
     return Snack;
 }(product_1.Product));

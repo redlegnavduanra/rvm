@@ -44,7 +44,7 @@ export const addBeverageQts: Object[] = [
     {
         type: "input",
         name: "volumeQnt",
-        message: "Enter volume quantity",
+        message: "Enter the volume of this beverage",
         default: "33"
     },
     {
@@ -83,13 +83,13 @@ export const addCigaretteQts: Array<Object> = [
     {
         type: "input",
         name: "volumeQnt",
-        message: "Enter volume quantity",
+        message: "Enter the amount of cigarettes in this product",
         default: "36"
     },
     {
         type: "list",
         name: "volumeUoM",
-        message: "Select volume unit of measurement",
+        message: "Select unit of measurement for the amount of cigarettes",
         choices: Object.keys(UnitOfMeasurement).map(
             key => UnitOfMeasurement[key as any]
         ),
@@ -144,12 +144,13 @@ export const addSnackQts: Object[] = [
     {
         type: "input",
         name: "energyQnt",
-        message: "Enter energy quantity"
+        message: "Enter the amount of energy in this snack"
     },
     {
         type: "list",
         name: "energyUoM",
-        message: "Select energy unit of measurement",
+        message:
+            "Select unit of measurement for the amount of energy in this snack",
         choices: Object.keys(UnitOfMeasurement).map(
             key => UnitOfMeasurement[key as any]
         ),
@@ -170,6 +171,7 @@ export const homeChoices: string[] = [
     "Remove product from inventory",
     "Show all receipts",
     "Show available products",
+    "Show details of specific product",
     "Select product",
     "Show order",
     "Pay",
@@ -192,6 +194,14 @@ export const payQts: Object[] = [
         type: "input",
         name: "amount",
         message: "Enter amount"
+    }
+];
+
+export const printProductQts: Object[] = [
+    {
+        type: "input",
+        name: "id",
+        message: "Enter id of the product you want to view"
     }
 ];
 

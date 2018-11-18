@@ -44,8 +44,19 @@ export class Medicine extends Product {
     }
 
     toString(): string {
-        return `Name: ${this.name}; Price: ${this.price}; Type: ${
-            this.type
-        }; Applicable for: ${this.illness} `;
+        return `\n
+*****************************************************************
+*\t\t\tMedicine\t\t\t\t*
+*****************************************************************
+\tName: ${this.name}\tType: ${this.type}
+        
+\tPrice: ${this.price.toFixed(2)}
+\tBrand: ${this.brand}
+\tUse for: ${this.illness}
+*****************************************************************`;
+
+        //     `Name: ${this.name}; Price: ${this.price}; Type: ${
+        //     this.type
+        // }; Applicable for: ${this.illness} `;
     }
 }

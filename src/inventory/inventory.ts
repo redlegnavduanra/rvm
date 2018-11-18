@@ -104,7 +104,10 @@ export class Inventory {
             throw new Error("Cannot print item: invalid id provided");
         }
 
-        console.log("" + this._products[id]);
+        console.log("" + this._products[id][0]);
+        console.log(`*\t\t\tIn Stock: ${this._products[id][1]}\t\t\t\t*
+*****************************************************************
+`);
     }
 
     printItems() {

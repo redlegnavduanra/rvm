@@ -119,7 +119,7 @@ var CLI = /** @class */ (function () {
     };
     CLI.prototype.home = function () {
         var _this = this;
-        var choices = questions_1.homeChoices;
+        var choices = questions_1.homeChoices.slice();
         // check for admin rights
         if (!this.isAdmin) {
             choices = choices.filter(function (itm) {
@@ -163,34 +163,37 @@ var CLI = /** @class */ (function () {
         questions_1.homeQts[0].choices = choices;
         inquirer.prompt(questions_1.homeQts).then(function (ans) {
             switch (ans.home) {
-                case "Add product to inventory":
+                case questions_1.homeChoices[0]:
                     _this.addProduct();
                     break;
-                case "Remove product from inventory":
+                case questions_1.homeChoices[1]:
                     _this.removeProducts();
                     break;
-                case "Show all receipts":
+                case questions_1.homeChoices[2]:
                     _this.printReceipts();
                     break;
-                case "Show available products":
+                case questions_1.homeChoices[3]:
                     _this.printInventory();
                     break;
-                case "Select product":
+                case questions_1.homeChoices[4]:
+                    _this.printProduct();
+                    break;
+                case questions_1.homeChoices[5]:
                     _this.selectProduct();
                     break;
-                case "Pay":
+                case questions_1.homeChoices[6]:
+                    _this.printSelectedProducts();
+                    break;
+                case questions_1.homeChoices[7]:
                     _this.payAmount();
                     break;
-                case "Finish transaction":
+                case questions_1.homeChoices[8]:
                     _this.finalize();
                     break;
-                case "Show order":
-                    _this.printSeletedProducts();
-                    break;
-                case "Cancel":
+                case questions_1.homeChoices[9]:
                     _this.cancel();
                     break;
-                case "Quit":
+                case questions_1.homeChoices[10]:
                     break;
             }
         });
@@ -215,12 +218,25 @@ var CLI = /** @class */ (function () {
         this.cashRegister.printInventory();
         this.home();
     };
-    CLI.prototype.printSeletedProducts = function () {
-        this.cashRegister.printReceipt();
-        this.home();
+    CLI.prototype.printProduct = function () {
+        var _this = this;
+        inquirer.prompt(questions_1.printProductQts).then(function (ans) {
+            var id = Number.parseInt(ans.id);
+            if (!isNaN(id)) {
+                _this.cashRegister.printProduct(id);
+            }
+            else {
+                console.error("Invalid input; please try again");
+            }
+            _this.home();
+        });
     };
     CLI.prototype.printReceipts = function () {
         this.cashRegister.printReceipts();
+        this.home();
+    };
+    CLI.prototype.printSelectedProducts = function () {
+        this.cashRegister.printReceipt();
         this.home();
     };
     CLI.prototype.removeProducts = function () {

@@ -43,8 +43,15 @@ export class Cigarette extends Product {
 
     // render a nice output to the console
     toString(): string {
-        return `Name: ${this.name}; Price: ${this.price}; Brand: ${
-            this.brand
-        }; Volume: ${this._volume}; Type: ${this.type}`;
+        return `\n
+*****************************************************************
+*\t\t\tCigarettes\t\t\t\t*
+*****************************************************************
+\tName: ${this.name}\tType: ${this.type}
+        
+\tPrice: ${this.price.toFixed(2)}
+\tBrand: ${this.brand}
+\tVolume: ${this.volume}
+*****************************************************************`;
     }
 }

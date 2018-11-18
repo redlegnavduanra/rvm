@@ -60,7 +60,7 @@ var Cigarette = /** @class */ (function (_super) {
     });
     // render a nice output to the console
     Cigarette.prototype.toString = function () {
-        return "Name: " + this.name + "; Price: " + this.price + "; Brand: " + this.brand + "; Volume: " + this._volume + "; Type: " + this.type;
+        return "\n\n*****************************************************************\n*\t\t\tCigarettes\t\t\t\t*\n*****************************************************************\n\tName: " + this.name + "\tType: " + this.type + "\n        \n\tPrice: " + this.price.toFixed(2) + "\n\tBrand: " + this.brand + "\n\tVolume: " + this.volume + "\n*****************************************************************";
     };
     return Cigarette;
 }(product_1.Product));

@@ -46,7 +46,7 @@ var Beverage = /** @class */ (function (_super) {
         configurable: true
     });
     Beverage.prototype.toString = function () {
-        return "Name: " + this.name + "; Price: " + this.price + "; Brand: " + this.brand + "; Volume: " + this.volume + "; Cooled: " + this.isCooled;
+        return "\n\n*****************************************************************\n*\t\t\tBeverage\t\t\t\t*\n*****************************************************************\n\tName: " + this.name + "\n        \n\tPrice: " + this.price.toFixed(2) + "\n\tBrand: " + this.brand + "\n\tVolume: " + this.volume + "\n\tCooled: " + this.isCooled + "\n*****************************************************************";
     };
     return Beverage;
 }(product_1.Product));

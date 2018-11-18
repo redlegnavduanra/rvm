@@ -101,7 +101,8 @@ var Inventory = /** @class */ (function () {
         if (id < 0 || id >= this._products.length) {
             throw new Error("Cannot print item: invalid id provided");
         }
-        console.log("" + this._products[id]);
+        console.log("" + this._products[id][0]);
+        console.log("*\t\t\tIn Stock: " + this._products[id][1] + "\t\t\t\t*\n*****************************************************************\n");
     };
     Inventory.prototype.printItems = function () {
         var result = "";

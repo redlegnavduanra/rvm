@@ -58,7 +58,10 @@ var Medicine = /** @class */ (function (_super) {
         }
     };
     Medicine.prototype.toString = function () {
-        return "Name: " + this.name + "; Price: " + this.price + "; Type: " + this.type + "; Applicable for: " + this.illness + " ";
+        return "\n\n*****************************************************************\n*\t\t\tMedicine\t\t\t\t*\n*****************************************************************\n\tName: " + this.name + "\tType: " + this.type + "\n        \n\tPrice: " + this.price.toFixed(2) + "\n\tBrand: " + this.brand + "\n\tUse for: " + this.illness + "\n*****************************************************************";
+        //     `Name: ${this.name}; Price: ${this.price}; Type: ${
+        //     this.type
+        // }; Applicable for: ${this.illness} `;
     };
     return Medicine;
 }(product_1.Product));
