@@ -76,6 +76,9 @@ var Inventory = /** @class */ (function () {
                 : (this._products[prdIdx][1] += quantity);
             this.printSuccess("Succesfully added " + product.name + " to inventory");
         }
+        else {
+            this.printError("Error adding " + product.name + ": no rows available. " + product.name + " not added");
+        }
     };
     Inventory.prototype.cancelSelection = function () {
         this.selectedProducts.splice(0);

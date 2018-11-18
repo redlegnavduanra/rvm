@@ -88,18 +88,23 @@ var CashRegister = /** @class */ (function () {
     CashRegister.prototype.selectProduct = function (id, quantity) {
         if (quantity === void 0) { quantity = 1; }
         try {
-            if (quantity > this.inventory.getProduct(id)[1]) {
-                this.printError("\n\nCannot provide " + quantity + " " + this.inventory.getProduct(id)[0].name + ", only " + this.inventory.getProduct(id)[1] + " in stock\n\n");
+            var selectedPrd_1 = this.inventory.getProduct(id);
+            var receiptPrd = this.receipt
+                ? this.receipt.products.find(function (prd) { return prd[0].name === selectedPrd_1[0].name; })
+                : null;
+            var totalQuantity = receiptPrd
+                ? receiptPrd[1] + quantity
+                : quantity;
+            if (totalQuantity > selectedPrd_1[1]) {
+                this.printError("\n\nCannot provide " + quantity + " " + selectedPrd_1[0].name + ", only " + selectedPrd_1[1] + " in stock\n\n");
                 return;
             }
             if (!this.receipt || this.receipt.status === general_1.ReceiptStatus.Closed) {
                 this.createReceipt();
             }
             this.inventory.selectProduct(id);
-            this.receipt.addProduct(this.inventory.getProduct(id)[0], quantity);
-            this.printSuccess("\n\nSuccesfully selected " + quantity + " of " + this.inventory.getProduct(id)[0].name + "\tPrice: " + this.inventory
-                .getProduct(id)[0]
-                .price.toFixed(2) + "\tTotal: " + (this.inventory.getProduct(id)[0].price * quantity).toFixed(2) + "\n\n");
+            this.receipt.addProduct(selectedPrd_1[0], quantity);
+            this.printSuccess("\n\nSuccesfully selected " + quantity + " of " + selectedPrd_1[0].name + "\tPrice: " + selectedPrd_1[0].price.toFixed(2) + "\tTotal: " + (selectedPrd_1[0].price * quantity).toFixed(2) + "\n\n");
         }
         catch (error) {
             this.printError(error.message);

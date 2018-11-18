@@ -128,6 +128,12 @@ var CLI = /** @class */ (function () {
                     itm !== "Show all receipts");
             });
         }
+        // if there is no space left, don't provide adding action
+        if (this.cashRegister.inventory.fullEmptyRows === 0) {
+            choices = choices.filter(function (itm) {
+                return itm !== "Add product to inventory";
+            });
+        }
         // if there is no current order, don't display order actions
         if (!this.cashRegister.receipt ||
             this.cashRegister.receipt.status === general_1.ReceiptStatus.Closed) {

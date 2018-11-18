@@ -309,6 +309,13 @@ export class CLI {
             });
         }
 
+        // if there is no space left, don't provide adding action
+        if (this.cashRegister.inventory.fullEmptyRows === 0) {
+            choices = choices.filter((itm: string) => {
+                return itm !== "Add product to inventory";
+            });
+        }
+
         // if there is no current order, don't display order actions
         if (
             !this.cashRegister.receipt ||
