@@ -146,12 +146,12 @@ exports.homeChoices = [
     "Add product to inventory",
     "Remove product from inventory",
     "Show all receipts",
-    "Show inventory",
+    "Show available products",
     "Select product",
+    "Show order",
     "Pay",
     "Finish transaction",
-    "Show order",
-    "Cancel/Refund",
+    "Cancel",
     "Quit"
 ];
 exports.homeQts = [

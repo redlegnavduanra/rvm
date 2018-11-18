@@ -61,7 +61,7 @@ export class CLI {
     private addBeverage(props: any) {
         inquirer.prompt(addBeverageQts).then(ans => {
             const price = Number.parseFloat(props.price);
-            const volumeQnt = Number.parseFloat(props.volumeQnt);
+            const volumeQnt = Number.parseFloat((ans as any).volumeQnt);
 
             if (!isNaN(price) && !isNaN(volumeQnt)) {
                 this.cashRegister.inventory.add(
@@ -85,7 +85,7 @@ export class CLI {
     private addCigarette(props: any) {
         inquirer.prompt(addCigaretteQts).then(ans => {
             const price = Number.parseFloat(props.price);
-            const volumeQnt = Number.parseFloat(props.volumeQnt);
+            const volumeQnt = Number.parseFloat((ans as any).volumeQnt);
 
             if (!isNaN(price) && !isNaN(volumeQnt)) {
                 this.cashRegister.inventory.add(
@@ -132,7 +132,7 @@ export class CLI {
     private addSnack(props: any) {
         inquirer.prompt(addSnackQts).then(ans => {
             const price = Number.parseFloat(props.price);
-            const energyQnt = Number.parseFloat(props.energyQnt);
+            const energyQnt = Number.parseFloat((ans as any).energyQnt);
 
             if (!isNaN(price) && !isNaN(energyQnt)) {
                 this.cashRegister.inventory.add(
@@ -318,7 +318,7 @@ export class CLI {
                 return (
                     itm !== "Show order" &&
                     itm !== "Finish transaction" &&
-                    itm !== "Cancel/Refund"
+                    itm !== "Cancel"
                 );
             });
         } else {
@@ -355,7 +355,7 @@ export class CLI {
                 case "Show all receipts":
                     this.printReceipts();
                     break;
-                case "Show inventory":
+                case "Show available products":
                     this.printInventory();
                     break;
                 case "Select product":
@@ -370,7 +370,7 @@ export class CLI {
                 case "Show order":
                     this.printSeletedProducts();
                     break;
-                case "Cancel/Refund":
+                case "Cancel":
                     this.cancel();
                     break;
                 case "Quit":

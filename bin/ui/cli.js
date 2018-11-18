@@ -34,7 +34,7 @@ var CLI = /** @class */ (function () {
         var _this = this;
         inquirer.prompt(questions_1.addBeverageQts).then(function (ans) {
             var price = Number.parseFloat(props.price);
-            var volumeQnt = Number.parseFloat(props.volumeQnt);
+            var volumeQnt = Number.parseFloat(ans.volumeQnt);
             if (!isNaN(price) && !isNaN(volumeQnt)) {
                 _this.cashRegister.inventory.add(new products_1.Beverage(props.name, price, ans.brand, new general_1.Quantity(volumeQnt, ans.volumeUoM), ans.isCooled), props.quantity);
             }
@@ -48,7 +48,7 @@ var CLI = /** @class */ (function () {
         var _this = this;
         inquirer.prompt(questions_1.addCigaretteQts).then(function (ans) {
             var price = Number.parseFloat(props.price);
-            var volumeQnt = Number.parseFloat(props.volumeQnt);
+            var volumeQnt = Number.parseFloat(ans.volumeQnt);
             if (!isNaN(price) && !isNaN(volumeQnt)) {
                 _this.cashRegister.inventory.add(new products_1.Cigarette(props.name, price, ans.brand, ans.type, new general_1.Quantity(volumeQnt, ans.volumeUoM)), props.quantity);
             }
@@ -75,7 +75,7 @@ var CLI = /** @class */ (function () {
         var _this = this;
         inquirer.prompt(questions_1.addSnackQts).then(function (ans) {
             var price = Number.parseFloat(props.price);
-            var energyQnt = Number.parseFloat(props.energyQnt);
+            var energyQnt = Number.parseFloat(ans.energyQnt);
             if (!isNaN(price) && !isNaN(energyQnt)) {
                 _this.cashRegister.inventory.add(new products_1.Snack(props.name, price, ans.category, ans.brand, ans.type, new general_1.Quantity(energyQnt, ans.energyUoM)), props.quantity);
             }
@@ -134,7 +134,7 @@ var CLI = /** @class */ (function () {
             choices = choices.filter(function (itm) {
                 return (itm !== "Show order" &&
                     itm !== "Finish transaction" &&
-                    itm !== "Cancel/Refund");
+                    itm !== "Cancel");
             });
         }
         else {
@@ -166,7 +166,7 @@ var CLI = /** @class */ (function () {
                 case "Show all receipts":
                     _this.printReceipts();
                     break;
-                case "Show inventory":
+                case "Show available products":
                     _this.printInventory();
                     break;
                 case "Select product":
@@ -181,7 +181,7 @@ var CLI = /** @class */ (function () {
                 case "Show order":
                     _this.printSeletedProducts();
                     break;
-                case "Cancel/Refund":
+                case "Cancel":
                     _this.cancel();
                     break;
                 case "Quit":

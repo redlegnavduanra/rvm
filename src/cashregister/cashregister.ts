@@ -50,7 +50,23 @@ export class CashRegister {
 
         this.receipt.payAmount(amount);
 
-        this.printSuccess(`\n\nSuccesfully paid ${amount.toFixed(2)}\n\n`);
+        const remainingAmount =
+            this.receipt.totalPayableAmount > this.receipt.totalPaidAmount
+                ? `Remaining amount:\t${(
+                      this.receipt.totalPayableAmount -
+                      this.receipt.totalPaidAmount
+                  ).toFixed(2)}`
+                : `Change:\t\t\t${(
+                      this.receipt.totalPaidAmount -
+                      this.receipt.totalPayableAmount
+                  ).toFixed(
+                      2
+                  )}\n\nPlease finish transaction to get your products`;
+        this.printSuccess(
+            `\n\nSuccesfully paid:\t${amount.toFixed(
+                2
+            )}\n${remainingAmount}\n\n`
+        );
     }
 
     printInventory() {
@@ -106,7 +122,11 @@ export class CashRegister {
             this.printSuccess(
                 `\n\nSuccesfully selected ${quantity} of ${
                     this.inventory.getProduct(id)[0].name
-                }\n\n`
+                }\tPrice: ${this.inventory
+                    .getProduct(id)[0]
+                    .price.toFixed(2)}\tTotal: ${(
+                    this.inventory.getProduct(id)[0].price * quantity
+                ).toFixed(2)}\n\n`
             );
         } catch (error) {
             this.printError(error.message);
