@@ -4,10 +4,18 @@
 
     $ npm install redleg -g
 
-## Prefilled Usage
+## Default usage with a prefilled inventory
 
     $ redleg
 
-## Options
+## Use with an empty inventory
 
-    $ redleg -h
+    $ redleg -e
+
+## Use with admin rights for managing inventory
+
+    $ redleg -a
+
+## Set the size of the inventory on startup
+
+    $ redleg -s <#rows,#itemsInRow>
