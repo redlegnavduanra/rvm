@@ -9,7 +9,7 @@ export class Inventory {
         this._selectedProducts = [];
     }
 
-    get fullEmptyRows(): number {
+    get totalEmptyRows(): number {
         const totalOccupiedRows = this._products
             .map(prd => Math.ceil(prd[1] / this.maxItemsPerRow))
             .reduce((acc, cur) => acc + cur, 0);
@@ -17,8 +17,8 @@ export class Inventory {
         return this.maxRows - totalOccupiedRows;
     }
 
-    get fullEmptyRowsSlots(): number {
-        return this.fullEmptyRows * this.maxItemsPerRow;
+    get totalEmptyRowsSlots(): number {
+        return this.totalEmptyRows * this.maxItemsPerRow;
     }
 
     get maxRows(): number {
@@ -54,8 +54,8 @@ export class Inventory {
 
         const totalFreeSlots =
             prdIdx < 0
-                ? this.fullEmptyRowsSlots
-                : this.fullEmptyRowsSlots +
+                ? this.totalEmptyRowsSlots
+                : this.totalEmptyRowsSlots +
                   (this.maxItemsPerRow -
                       (this._products[prdIdx][1] % this.maxItemsPerRow));
 
@@ -184,8 +184,8 @@ export class Inventory {
             this.maxItemsPerRow
         } slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: ${this.maxRows -
             this
-                .fullEmptyRows}\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: ${
-            this.fullEmptyRows
+                .totalEmptyRows}\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: ${
+            this.totalEmptyRows
         }\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*
 *********************************************************************************************************************************************************\n\n`;
 

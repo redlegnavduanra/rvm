@@ -1,6 +1,6 @@
 {
     "name": "redleg",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Redleg Vending Machine",
     "main": "./bin/index.js",
     "scripts": {

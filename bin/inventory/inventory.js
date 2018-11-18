@@ -7,7 +7,7 @@ var Inventory = /** @class */ (function () {
         this._products = [];
         this._selectedProducts = [];
     }
-    Object.defineProperty(Inventory.prototype, "fullEmptyRows", {
+    Object.defineProperty(Inventory.prototype, "totalEmptyRows", {
         get: function () {
             var _this = this;
             var totalOccupiedRows = this._products
@@ -18,9 +18,9 @@ var Inventory = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Inventory.prototype, "fullEmptyRowsSlots", {
+    Object.defineProperty(Inventory.prototype, "totalEmptyRowsSlots", {
         get: function () {
-            return this.fullEmptyRows * this.maxItemsPerRow;
+            return this.totalEmptyRows * this.maxItemsPerRow;
         },
         enumerable: true,
         configurable: true
@@ -66,8 +66,8 @@ var Inventory = /** @class */ (function () {
         if (quantity === void 0) { quantity = 1; }
         var prdIdx = this._products.findIndex(function (prd) { return prd[0].name === product.name; });
         var totalFreeSlots = prdIdx < 0
-            ? this.fullEmptyRowsSlots
-            : this.fullEmptyRowsSlots +
+            ? this.totalEmptyRowsSlots
+            : this.totalEmptyRowsSlots +
                 (this.maxItemsPerRow -
                     (this._products[prdIdx][1] % this.maxItemsPerRow));
         if (quantity <= totalFreeSlots) {
@@ -149,7 +149,7 @@ var Inventory = /** @class */ (function () {
         });
         result += "*********************************************************************************************************************************************************\n*\tTotal inventory size: " + this.size + " (" + this.maxRows + " rows of " + this.maxItemsPerRow + " slots)\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tUsed rows: " + (this.maxRows -
             this
-                .fullEmptyRows) + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: " + this.fullEmptyRows + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*********************************************************************************************************************************************************\n\n";
+                .totalEmptyRows) + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*\tFree rows: " + this.totalEmptyRows + "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t*\n*********************************************************************************************************************************************************\n\n";
         return result;
     };
     return Inventory;

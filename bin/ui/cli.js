@@ -129,7 +129,7 @@ var CLI = /** @class */ (function () {
             });
         }
         // if there is no space left, don't provide adding action
-        if (this.cashRegister.inventory.fullEmptyRows === 0) {
+        if (this.cashRegister.inventory.totalEmptyRows === 0) {
             choices = choices.filter(function (itm) {
                 return itm !== "Add product to inventory";
             });
